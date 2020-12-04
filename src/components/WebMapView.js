@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { loadModules } from 'esri-loader';
-import getTrees from '../hooks/getTrees';
+// import getTrees from '../hooks/getTrees';
+import treeConfig from '../mapConfig/treeConfig';
 
 const wardConfig = require('../mapConfig/wardConfig.json')
 
@@ -10,19 +11,21 @@ export const WebMapView = () => {
   const mapRef = useRef();
 
   const loadMap = () => {
-    // lazy load the required ArcGIS API for JavaScript modules and CSS
+    // lazy load the required ArcGIS API for JavaScript 
+    // modules and CSS
     loadModules([
       'esri/Map', 
       'esri/views/MapView',
       "esri/layers/GeoJSONLayer",
-      "esri/layers/support/Field",
-      
+      "esri/smartMapping/renderers/type",
+      "esri/core/watchUtils",
     ], { css: true })
     .then(([
       ArcGISMap, 
       MapView, 
       GeoJSONLayer, 
-      Field,
+      typeRendererCreator,
+      watchUtils
     ]) => {
       const map = new ArcGISMap({
         basemap: 'topo-vector'
@@ -33,25 +36,74 @@ export const WebMapView = () => {
         container: mapRef.current,
         map: map,
         center: [-77.03738075521436, 38.89504310519569],
-        zoom: 12
+        zoom: 12,
+        popup: {
+          dockEnabled: true,
+          dockOptions: {
+            buttonEnabled: false,
+            breakpoint: false
+          }
+        }
       });
+      console.log(treeConfig())
       
-      // const fieldList = (fields) => {
-      //     return fields.forEach(field => {
-      //       new Field(field)
-      //     });
-      // }
+      const wards = new GeoJSONLayer(wardConfig.layer);
+      const trees = new GeoJSONLayer(treeConfig());
 
-        // START OF WARD CONFIG
+      var typeParams = {
+        layer: trees,
+        view: view,
+        field: "DOM_CROP_ACRES",
+        legendOptions: {
+          title: "Dominant crop in harvested acres by county (2007)"
+        }
+      };
 
-        // var WardFields = fieldList(wardConfig.fields);
+      const generateRenderer = () => {
+        // configure parameters for the color renderer generator.
+        // The layer must be specified along with a field name
+        // The view and other properties determine
+        // the appropriate default color scheme.
 
-        const wards = new GeoJSONLayer(wardConfig.layer);
+        var typeParams = {
+          layer: trees,
+          view: view,
+          field: "CONDITION",
+          legendOptions: {
+            title: "Last known condition of tree"
+          }
+        };
 
-        // END OF WARD CONFIG
-       
-        map.add(wards)
-        getTrees()
+        // Generate a unique value renderer based on the
+        // unique values of the DOM_CROPS_ACRES field.
+        // The generated renderer creates a visualization,
+        // assigning each feature to a category.
+        //
+        // This resolves to an object containing several helpful
+        // properties, including the type scheme, unique value infos,
+        // excluded values (if any), and the renderer object
+
+        typeRendererCreator
+          .createRenderer(typeParams)
+          .then(function (response) {
+            // set the renderer to the layer and add it to the map
+
+            trees.renderer = response.renderer;
+
+            if (!map.layers.includes(trees)) {
+              map.add(trees);
+            }
+          })
+          .catch(function (error) {
+            console.error("there was an error: ", error);
+          });
+      }
+      watchUtils.whenFalseOnce(view, "updating", generateRenderer);
+
+      // END OF WARD CONFIG
+      map.add(wards)
+      map.add(trees)
+
 
         return () => {
           if (view) {

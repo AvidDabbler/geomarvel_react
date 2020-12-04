@@ -12,11 +12,12 @@ const getTrees = () => {
         dataType: "json",
         contentType: "application/json",
     };
+
     axios(config).then(function (response) {
-        console.log(response.data);
+        return response.data;
     }).catch(function (error) {
         console.error(error);
-    });
+    })
 };
 
 
