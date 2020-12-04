@@ -1,13 +1,12 @@
 import './App.css';
 import './tailwind.output.css';
-
+import { WebMapView } from './components/WebMapView';
 
 
 function App() {
-  console.log(process.env)
   return (
-    <div className="App bg-green-900">
-      
+    <div className="Ap h-screen">
+      <WebMapView />
     </div>
   );
 }
