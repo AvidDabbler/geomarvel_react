@@ -3,12 +3,12 @@ import React, { useEffect, useState} from 'react';
 
 import cors from '../cors'
 
-const API_URL = cors("http://localhost:3000")
+const API_URL = "http://localhost:3000"
 
 const getTrees = () => {
     var config = {
         method: 'GET',
-        url: `${API_URL}getAll`,
+        url: `${API_URL}/getAll`,
         dataType: "json",
         contentType: "application/json",
     };
