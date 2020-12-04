@@ -50,14 +50,7 @@ export const WebMapView = () => {
       const wards = new GeoJSONLayer(wardConfig.layer);
       const trees = new GeoJSONLayer(treeConfig());
 
-      var typeParams = {
-        layer: trees,
-        view: view,
-        field: "DOM_CROP_ACRES",
-        legendOptions: {
-          title: "Dominant crop in harvested acres by county (2007)"
-        }
-      };
+
 
       const generateRenderer = () => {
         // configure parameters for the color renderer generator.
