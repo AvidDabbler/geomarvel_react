@@ -1,12 +1,13 @@
 import './App.css';
+import './tailwind.output.css';
 
 
 
 function App() {
   console.log(process.env)
   return (
-    <div className="App">
-      <p>{process.env.API_URL}</p>
+    <div className="App bg-green-900">
+      
     </div>
   );
 }
