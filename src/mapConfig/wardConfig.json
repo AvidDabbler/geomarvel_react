@@ -1,0 +1,38 @@
+{
+    "popup":{
+        "title": "Ward: {WARD}"
+    },
+    "fields":
+        [
+            {
+                "name": "ObjectID",
+                "alias": "ObjectID",
+                "type": "oid"
+            },
+            {
+                "name": "WARD",
+                "alias": "Ward",
+                "type": "string"
+            }
+        ],
+    "layer": {
+            "url": "https://opendata.arcgis.com/datasets/0ef47379cbae44e88267c01eaec2ff6e_31.geojson",
+            "popupEnabled": true,
+            "popupTemplate":{
+                "title": "Ward: {WARD}"
+            },
+            "renderer": {
+                "type": "simple",
+                "symbol": {
+                "type": "simple-fill",
+                "color": [ 51,51, 204, 0.03 ],
+                "outline": {
+                    "color": [128, 128, 128],
+                    "width": "1"
+                    },
+                "label": "WARDS"
+                }
+            }
+          
+          }
+}
