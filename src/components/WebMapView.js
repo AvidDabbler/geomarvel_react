@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { loadModules } from 'esri-loader';
-// import getTrees from '../hooks/getTrees';
-import treeConfig from '../mapConfig/treeConfig';
+import TreeConfig from '../hooks/TreeConfig';
+import TreeURL from '../hooks/TreeURL';
+
 
 const wardConfig = require('../mapConfig/wardConfig.json')
 
@@ -9,6 +10,7 @@ const wardConfig = require('../mapConfig/wardConfig.json')
 
 export const WebMapView = () => {
   const mapRef = useRef();
+  const [treeURL, setTreeURL] = TreeURL();
 
   const loadMap = () => {
     // lazy load the required ArcGIS API for JavaScript 
@@ -35,7 +37,7 @@ export const WebMapView = () => {
       const view = new MapView({
         container: mapRef.current,
         map: map,
-        center: [-77.03738075521436, 38.89504310519569],
+        center: [-77.03, 38.89],
         zoom: 12,
         popup: {
           dockEnabled: true,
@@ -45,12 +47,9 @@ export const WebMapView = () => {
           }
         }
       });
-      console.log(treeConfig())
       
       const wards = new GeoJSONLayer(wardConfig.layer);
-      const trees = new GeoJSONLayer(treeConfig());
-
-
+      const trees = new GeoJSONLayer(TreeConfig(treeURL));
 
       const generateRenderer = () => {
         // configure parameters for the color renderer generator.
@@ -66,15 +65,6 @@ export const WebMapView = () => {
             title: "Last known condition of tree"
           }
         };
-
-        // Generate a unique value renderer based on the
-        // unique values of the DOM_CROPS_ACRES field.
-        // The generated renderer creates a visualization,
-        // assigning each feature to a category.
-        //
-        // This resolves to an object containing several helpful
-        // properties, including the type scheme, unique value infos,
-        // excluded values (if any), and the renderer object
 
         typeRendererCreator
           .createRenderer(typeParams)
@@ -95,8 +85,10 @@ export const WebMapView = () => {
 
       // END OF WARD CONFIG
       map.add(wards)
+      
       map.add(trees)
 
+      view.constraints = {minZoom: 12};
 
         return () => {
           if (view) {

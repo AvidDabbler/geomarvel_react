@@ -1,3 +1,10 @@
 .webmap {
-  height: 100vh
+  height: 100vh;
+  width: 80%;
+}
+.filter-panel {
+  z-index: 100;
+  height: 100vh;
+  width: 20%;
+  margin-left: auto;
 }
