@@ -71,23 +71,24 @@ export const WebMapView = () => {
           }
         };
 
-        typeRendererCreator
-          .createRenderer(typeParams)
-          .then(function (response) {
-            // set the renderer to the layer and add it to the map
+        // typeRendererCreator
+        //   .createRenderer(typeParams)
+        //   .then(function (response) {
+        //     // set the renderer to the layer and add it to the map
 
-            trees.renderer = response.renderer;
+        //     trees.renderer = response.renderer;
 
-            if (!map.layers.includes(trees)) {
-              map.add(trees);
-            }
-          })
-          .catch(function (error) {
-            console.error("there was an error: ", error);
-          });
+        //     if (!map.layers.includes(trees)) {
+        //       map.add(trees);
+        //     }
+        //   })
+        //   .catch(function (error) {
+        //     console.error("there was an error: ", error);
+        //   });
       }
-      watchUtils.whenFalseOnce(view, "updating", generateRenderer);
+      // watchUtils.whenFalseOnce(view, "updating", generateRenderer);
 
+      // start of click event
       view.on("click", function(event) {
         // the hitTest() checks to see if any graphics in the view
         // intersect the given screen x, y coordinates
@@ -95,6 +96,7 @@ export const WebMapView = () => {
           .then(getGraphics);
       });
 
+      // access the attributes
       function getGraphics(response) {
         // the topmost graphic from the click location
         // and display select attribute values from the
@@ -103,11 +105,7 @@ export const WebMapView = () => {
         var attributes = graphic.attributes;
         var condition = attributes;
         
-        console.log(condition);
-
-        // symbolize all line segments with the given
-        // storm name with the same symbol
-        
+        console.log(condition);       
       }
 
 
@@ -115,7 +113,7 @@ export const WebMapView = () => {
       map.add(wards)
       map.add(trees)
 
-      view.constraints = {minZoom: 12};
+      // view.constraints = {minZoom: 12};
 
         return () => {
           if (view) {
