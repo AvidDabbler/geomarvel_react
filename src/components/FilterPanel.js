@@ -7,7 +7,9 @@ const FilterPanel = (conditions) => {
     return(
         <div className='filter-panel flex'>
             <ConditionButtons />
+            <div id='info'></div>
         </div>
+
     )
 }
 

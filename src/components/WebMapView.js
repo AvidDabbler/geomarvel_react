@@ -21,13 +21,18 @@ export const WebMapView = () => {
       "esri/layers/GeoJSONLayer",
       "esri/smartMapping/renderers/type",
       "esri/core/watchUtils",
+      "esri/renderers/UniqueValueRenderer",
+      "dojo/dom",
+      "dojo/domReady!"
     ], { css: true })
     .then(([
       ArcGISMap, 
       MapView, 
       GeoJSONLayer, 
       typeRendererCreator,
-      watchUtils
+      watchUtils,
+      UniqueValueRenderer,
+      dom
     ]) => {
       const map = new ArcGISMap({
         basemap: 'topo-vector'
@@ -83,9 +88,31 @@ export const WebMapView = () => {
       }
       watchUtils.whenFalseOnce(view, "updating", generateRenderer);
 
+      view.on("click", function(event) {
+        // the hitTest() checks to see if any graphics in the view
+        // intersect the given screen x, y coordinates
+        view.hitTest(event)
+          .then(getGraphics);
+      });
+
+      function getGraphics(response) {
+        // the topmost graphic from the click location
+        // and display select attribute values from the
+        // graphic to the user
+        var graphic = response.results[0].graphic;
+        var attributes = graphic.attributes;
+        var condition = attributes;
+        
+        console.log(condition);
+
+        // symbolize all line segments with the given
+        // storm name with the same symbol
+        
+      }
+
+
       // END OF WARD CONFIG
       map.add(wards)
-      
       map.add(trees)
 
       view.constraints = {minZoom: 12};
