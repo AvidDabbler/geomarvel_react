@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import ButtonsGroup from './ButtonsGroup';
 
-
 const ConditionState = () => {
     const [condition, setCondition] = useState();
     return [condition, setCondition]
@@ -9,7 +8,6 @@ const ConditionState = () => {
 
 const ConditionButtons = (props) => {
     const [condition, setCondition] = ConditionState();
-    // const [treeURL, setTreeURL] = props.url;
     
     const conditionList = ['Excellent', 'Good', 'Fair', 'Poor'];
 

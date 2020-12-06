@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { loadModules } from 'esri-loader';
 import TreeConfig from '../hooks/TreeConfig';
 import TreeURL from '../hooks/TreeURL';
+import clickFeature from '../functions/treeClickHandler';
+import axios from 'axios';
 
 
 const wardConfig = require('../mapConfig/wardConfig.json')
@@ -12,7 +14,7 @@ export const WebMapView = () => {
   const mapRef = useRef();
   const [treeURL, setTreeURL] = TreeURL();
 
-  const loadMap = () => {
+  const loadMap = (treeURL) => { 
     // lazy load the required ArcGIS API for JavaScript 
     // modules and CSS
     loadModules([
@@ -55,6 +57,7 @@ export const WebMapView = () => {
       
       const wards = new GeoJSONLayer(wardConfig.layer);
       const trees = new GeoJSONLayer(TreeConfig(treeURL));
+      
 
       const generateRenderer = () => {
         // configure parameters for the color renderer generator.
@@ -71,53 +74,34 @@ export const WebMapView = () => {
           }
         };
 
-        // typeRendererCreator
-        //   .createRenderer(typeParams)
-        //   .then(function (response) {
-        //     // set the renderer to the layer and add it to the map
+        typeRendererCreator.createRenderer(typeParams)
+          .then(function (response) {
+            // set the renderer to the layer and add it to the map
 
-        //     trees.renderer = response.renderer;
+            trees.renderer = response.renderer;
 
-        //     if (!map.layers.includes(trees)) {
-        //       map.add(trees);
-        //     }
-        //   })
-        //   .catch(function (error) {
-        //     console.error("there was an error: ", error);
-        //   });
+            if (!map.layers.includes(trees)) {
+              map.add(trees);
+            }
+          })
+          .catch(function (error) {
+            console.error("there was an error: ", error);
+          });
       }
       // watchUtils.whenFalseOnce(view, "updating", generateRenderer);
 
       // start of click event
       // https://totalapis.github.io/sample-code/sandbox/index.html?sample=view-hittest
-      view.on("click", function(event) {
-        // the hitTest() checks to see if any graphics in the view
-        // intersect the given screen x, y coordinates
-        let coor = [event.mapPoint.latitude, event.mapPoint.longitude ];
-        view.hitTest(event)
-          .then(response => {
-            getGraphics(response,coor)
-          });
-      });
+      view.on("click", (event)=>clickFeature(event, view));
+
 
       // access the attributes
-      function getGraphics(response, coor) {
-        // the topmost graphic from the click location
-        // and display select attribute values from the
-        // graphic to the user
-        var graphic = response.results[0].graphic;
-        var attributes = graphic.attributes;
-        var condition = attributes.condition;
-        
-        console.log(graphic);       
-        console.log(graphic.attributes);   
-        console.log(coor)
-      }
-
+      watchUtils.whenFalseOnce(view, "updating", generateRenderer); 
 
       // END OF WARD CONFIG
       map.add(wards)
       map.add(trees)
+      
 
       // view.constraints = {minZoom: 12};
 
@@ -129,10 +113,29 @@ export const WebMapView = () => {
         };
       });
     }
+  const updateData = async () => {
+    let json;
+    var config = {
+        method: 'GET',
+        url: `http://localhost:3000/getAll`,
+        dataType: "json",
+        contentType: "application/json",
+    };
+
+    axios(config)
+    .then(function (response) {
+      console.log(response.data)
+      json = response.data;
+    }).catch(function (error) {
+        console.error(error);
+    })
+    return await json
+};
   
-  useEffect(
-    loadMap,
-    );
+  useEffect(async()=>{
+    loadMap(treeURL)
+    
+  });
 
     return <div className="webmap" ref={mapRef} />;
 };

@@ -3,10 +3,10 @@ import TreeURL from '../hooks/TreeURL';
 import ConditionButtons from './ConditionButtons'
 
 
-const FilterPanel = (conditions) => {
+const FilterPanel = () => {
     return(
         <div className='filter-panel flex'>
-            <ConditionButtons />
+            <ConditionButtons url={TreeURL} />
             <div id='info'></div>
         </div>
 
