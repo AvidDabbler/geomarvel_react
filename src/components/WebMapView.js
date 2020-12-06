@@ -89,23 +89,29 @@ export const WebMapView = () => {
       // watchUtils.whenFalseOnce(view, "updating", generateRenderer);
 
       // start of click event
+      // https://totalapis.github.io/sample-code/sandbox/index.html?sample=view-hittest
       view.on("click", function(event) {
         // the hitTest() checks to see if any graphics in the view
         // intersect the given screen x, y coordinates
+        let coor = [event.mapPoint.latitude, event.mapPoint.longitude ];
         view.hitTest(event)
-          .then(getGraphics);
+          .then(response => {
+            getGraphics(response,coor)
+          });
       });
 
       // access the attributes
-      function getGraphics(response) {
+      function getGraphics(response, coor) {
         // the topmost graphic from the click location
         // and display select attribute values from the
         // graphic to the user
         var graphic = response.results[0].graphic;
         var attributes = graphic.attributes;
-        var condition = attributes;
+        var condition = attributes.condition;
         
-        console.log(condition);       
+        console.log(graphic);       
+        console.log(graphic.attributes);   
+        console.log(coor)
       }
 
 
