@@ -55,16 +55,27 @@ export const WebMapView = () => {
       });
       
       const wards = new GeoJSONLayer(wardConfig.layer);
-      const trees = new GeoJSONLayer(TreeConfig(treeURL));
+      const allTrees = new GeoJSONLayer(TreeConfig(treeURL));
+      const poor = document.getElementById('Poor')
 
-      const generateRenderer = () => {
+      poor.addEventListener('click', async function(){
+        if(allTrees){
+          map.removeAll()
+          console.log('map click function: ', treeURL)
+          const poorTrees = new GeoJSONLayer(TreeConfig(`getByParams?CONDITION=Poor`));
+
+          map.add(poorTrees)
+        }
+      })
+
+      const generateRenderer = (layer) => {
         // configure parameters for the color renderer generator.
         // The layer must be specified along with a field name
         // The view and other properties determine
         // the appropriate default color scheme.
 
         var typeParams = {
-          layer: trees,
+          layer,
           view: view,
           field: "CONDITION",
           legendOptions: {
@@ -77,10 +88,10 @@ export const WebMapView = () => {
           .then(function (response) {
             // set the renderer to the layer and add it to the map
 
-            trees.renderer = response.renderer;
+            layer.renderer = response.renderer;
 
-            if (!map.layers.includes(trees)) {
-              map.add(trees);
+            if (!map.layers.includes(layer)) {
+              map.add(layer);
             }
           })
           .catch(function (error) {
@@ -108,26 +119,29 @@ export const WebMapView = () => {
 
 
       // END OF WARD CONFIG
-      watchUtils.whenFalseOnce(view, "updating", generateRenderer);
+      watchUtils.whenFalseOnce(view, "updating", generateRenderer(allTrees));
+      let button = document.getElementsByClassName('button')
+
 
       map.add(wards)
-      map.add(trees)
+      map.add(allTrees)
 
       // view.constraints = {minZoom: 12};
 
-        return () => {
-          if (view) {
-            // destroy the map view
-            view.destroy();
-            view.on('click', e=>clickFeature(e, view))
-          }
-        };
+        // return () => {
+        //   if (view) {
+        //     // destroy the map view
+        //     view.destroy();
+        //   }
+        // };
       });
     }
   
-  useEffect(
-    loadMap,
-    );
+  useEffect(()=>{
+
+    loadMap()
+    console.log('useEffect: ', treeURL)
+  },[treeURL]);
 
     return <div className="webmap" ref={mapRef} />;
 };
