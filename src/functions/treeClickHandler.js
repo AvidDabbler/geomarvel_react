@@ -2,12 +2,15 @@ const getFeatureAttributes = (response, coor) => {
     // the topmost graphic from the click location
     // and display select attribute values from the
     // graphic to the user
+    if(!response.results[0].graphic){
+        return
+    }
     var graphic = response.results[0].graphic;
     var attributes = graphic.attributes;
     var condition = attributes.condition;
-    attributes.coor = coor
-    console.log(attributes);
     
+    console.log(attributes);
+    return {attributes, coor}
 }
     
 const clickFeature = (event, view) => {

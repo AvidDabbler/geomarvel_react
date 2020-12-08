@@ -90,7 +90,7 @@ export const WebMapView = () => {
 
       // start of click event
       // https://totalapis.github.io/sample-code/sandbox/index.html?sample=view-hittest
-      view.on("click", (e)=>clickFeature(e, view));
+      // view.on("click", (e)=>clickFeature(e, view));
 
       // access the attributes
       function getGraphics(response, coor) {
