@@ -1,19 +1,22 @@
 import React from 'react';
 import TreeURL from '../hooks/TreeURL';
+import TreeConfig from '../hooks/TreeConfig';
+import { renderMap, removeAll } from './WebMapView';
 
-const ButtonsGroup = (props) => {
+
+function ButtonsGroup(props){
     let elements = [];
     let [treeURL, setTreeURL] = TreeURL()
-    
+
     props.list.forEach((item) => {
         elements.push(
-            <li class="mr-3">
+            <li key={item} className="mr-3">
                 <button 
-                    key={item} 
                     className="inline-block border border-blue-500 rounded py-1 px-3 bg-blue-500 text-white" 
-                    onClick={()=>{
+                    onClick={(e)=>{
                         setTreeURL(`getByParams?CONDITION=${item}`)
                         console.log(treeURL)
+                        props.view.removeAll()
                     }
                     }>{item}
                 </button>

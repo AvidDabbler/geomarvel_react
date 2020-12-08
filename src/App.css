@@ -1,10 +1,16 @@
 .webmap {
   height: 100vh;
-  width: 80%;
+  width: 100%;
 }
 .filter-panel {
   z-index: 100;
   height: 100vh;
   width: 20%;
   margin-left: auto;
+}
+#slider {
+  display: flex;
+  height: 30vh;
+  width: 100vh;
+  visibility: hidden;
 }

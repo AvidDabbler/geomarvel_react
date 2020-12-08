@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="Ap h-screen flex flex-row">
       <WebMapView />
-      <FilterPanel />
+      {/* <FilterPanel /> */}
     </div>
   );
 }

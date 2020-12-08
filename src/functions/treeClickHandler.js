@@ -7,14 +7,23 @@ const getFeatureAttributes = (response, coor) => {
     var condition = attributes.condition;
     attributes.coor = coor
     console.log(attributes);
+    
 }
     
 const clickFeature = (event, view) => {
     // the hitTest() checks to see if any graphics in the view
     // intersect the given screen x, y coordinates
+    let arcmap = document.getElementById('arcmap');
+    let slider = document.getElementById('slider');
     let coor = [event.mapPoint.longitude, event.mapPoint.latitude];
+
+    view.center = coor
+    view.zoom = 20
     view.hitTest(event)
-        .then(response => {getFeatureAttributes(response, coor)});
+        .then(response => {
+            getFeatureAttributes(response, coor)});
+
+
 }
 
 export default clickFeature;

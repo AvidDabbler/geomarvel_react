@@ -43,6 +43,14 @@ var treeConfig = () => {
 };
 ```
 
+- I was able to get it to setTreeURL, but when I setup the useEffect() to listen for the change the map would not update.
+  - problems with the way that I wrote it:
+    - arcgis api is difficult to break apart
+    - the rendering of layers is dependent on the map and view of the original map
+    - exporting the map elements gave me criptic errors
+    
+
+
 ### Cool thoughts!!!
 - add in a chart of the condition of the trees
 - filter by ward
