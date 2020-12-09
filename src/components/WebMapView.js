@@ -14,6 +14,7 @@ export const WebMapView = () => {
   let treeURL = 'getAll'
   let conditionList = ['Excellent', 'Good', 'Fair', 'Poor'];
   const wardList = [1,2,3,4,5,6,7,8,9];
+  let poorTrees, condFilter;
 
 
   const loadMap = () => {
@@ -107,31 +108,40 @@ export const WebMapView = () => {
         var condition = attributes.condition;
         
       }
-
+      let config;
       const domFilter = (nodeList, mainList, urlParam) => {
         // poor button event listener
+        if(nodeList.length == 0){
+          map.removeAll()
+          map.add(allTrees)
+        }
         nodeList.forEach(nodeItem=>{
           let condition = nodeItem.dataset.item
+          // find all of the coresponding buttons
           nodeItem.addEventListener('click', async function(){
             map.removeAll()
+            // if button is turned off, l
             if(mainList.includes(condition)){
-              const condFilter = cond=>{return cond != condition}
+              condFilter = cond=>{return cond != condition}
               mainList = mainList.filter(condFilter)
             }
+            // if button is turned back on add back to list
             else{
               mainList = mainList.push(condition)
-              console.log(mainList.toString())
             }
-            let poorTrees = new GeoJSONLayer(TreeConfig(`getByParams?${urlParam}=${mainList.toString()}`));
+            config = TreeConfig(`getByParams?${urlParam}=${mainList.toString()}`);
+            console.log('config:', config)
+            poorTrees = new GeoJSONLayer(config);
             watchUtils.whenFalseOnce(view, "updating", generateRenderer(poorTrees));
             map.add(poorTrees)
-            console.log(`getByParams?CONDITION=${mainList.toString()}`)
+            console.log(`getByParams?CONDITION=${condition}`)
+            return
           })
         })
       }
 
       domFilter(activeConditions, conditionList, 'CONDITION')
-      // domFilter(activeConditions, conditionList, 'WARDS')
+      // domFilter(activeWards, wardList, 'WARDS')
 
 
       // END OF WARD CONFIG

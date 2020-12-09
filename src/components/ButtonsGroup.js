@@ -3,7 +3,7 @@ import React from 'react';
 function ButtonsGroup(props){
     let elements = [];
     let onClass = props.onClass;
-
+    
     props.list.forEach((item) => {
         elements.push(
             <li key={item} className="mr-3 mx-auto">
@@ -13,16 +13,23 @@ function ButtonsGroup(props){
                     data-rendered={true}
                     data-item={item}
                     onClick={e=>{
-                        if(document.getElementById(item).classList.contains('button-on')){
-                            document.getElementById(item).classList.remove('button-on')
-                            document.getElementById(item).classList.remove(onClass)
-                            document.getElementById(item).classList.add('button-off')
+                        let buttonClasslist= document.getElementById(item).classList
+                        if(buttonClasslist.contains('button-on')){
+                            buttonClasslist.remove('button-on');
+                            buttonClasslist.remove(onClass);
+                            buttonClasslist.add('button-off');
                         }
                         else{
-                            document.getElementById(item).classList.remove('button-off')
-                            document.getElementById(item).classList.add(onClass)
-                            document.getElementById(item).classList.add('button-on')
+                            buttonClasslist.remove('button-off');
+                            buttonClasslist.add(onClass);
+                            buttonClasslist.add('button-on');
                         }
+                    }}
+                    onLoad={e=>{
+                        let buttonClasslist= document.getElementById(item).classList
+                        buttonClasslist.remove('button-off');
+                        buttonClasslist.add(onClass);
+                        buttonClasslist.add('button-on');
                     }}
                     >{item}
                 </button>

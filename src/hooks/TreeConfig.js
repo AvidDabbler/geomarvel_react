@@ -1,4 +1,4 @@
-var TreeConfig = (url) => {
+let TreeConfig = (url) => {
     return {
             url: `${process.env.REACT_APP_API_HOST}/${url}`, // "http://localhost:3000/getByParams?CONDITION=Good&WARD=2",
             popupEnabled: true,
