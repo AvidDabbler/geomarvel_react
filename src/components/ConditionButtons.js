@@ -12,7 +12,7 @@ const ConditionButtons = (props) => {
     const conditionList = ['Excellent', 'Good', 'Fair', 'Poor'];
 
     return(
-        <ButtonsGroup list={conditionList} />
+        <ButtonsGroup list={conditionList} onClass='condition-on' />
     )
 }
 

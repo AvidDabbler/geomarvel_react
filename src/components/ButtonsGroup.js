@@ -1,34 +1,38 @@
 import React from 'react';
-import TreeURL from '../hooks/TreeURL';
-import TreeConfig from '../hooks/TreeConfig';
-import { renderMap, removeAll } from './WebMapView';
-
 
 function ButtonsGroup(props){
     let elements = [];
-    let [treeURL, setTreeURL] = TreeURL();
+    let onClass = props.onClass;
 
     props.list.forEach((item) => {
         elements.push(
-            <li key={item} className="mr-3">
+            <li key={item} className="mr-3 mx-auto">
                 <button 
                     id={item}
-                    className="button inline-block border border-blue-500 rounded py-1 px-3 bg-blue-500 text-white" 
-                    onClick={(e)=>{
-                        setTreeURL(`getByParams?CONDITION=${item}`)
-                        console.log(treeURL)
-
-                    }
-                    }>{item}
+                    className={`button-on inline-block border rounded py-1 px-3 ${onClass}`} 
+                    data-rendered={true}
+                    data-item={item}
+                    onClick={e=>{
+                        if(document.getElementById(item).classList.contains('button-on')){
+                            document.getElementById(item).classList.remove('button-on')
+                            document.getElementById(item).classList.remove(onClass)
+                            document.getElementById(item).classList.add('button-off')
+                        }
+                        else{
+                            document.getElementById(item).classList.remove('button-off')
+                            document.getElementById(item).classList.add(onClass)
+                            document.getElementById(item).classList.add('button-on')
+                        }
+                    }}
+                    >{item}
                 </button>
             </li>)
     })
     
     return(
-        <div>
-            <ul>
+        <div className="flex mx-auto">
+            <ul className="flex flex-col mx-auto">
                 {elements}
-                <li>here</li>
             </ul>
         </div>
 

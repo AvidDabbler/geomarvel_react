@@ -11,7 +11,10 @@ const wardConfig = require('../mapConfig/wardConfig.json')
 
 export const WebMapView = () => {
   const mapRef = useRef();
-  const [treeURL, setTreeURL] = TreeURL();
+  let treeURL = 'getAll'
+  let conditionList = ['Excellent', 'Good', 'Fair', 'Poor'];
+  const wardList = [1,2,3,4,5,6,7,8,9];
+
 
   const loadMap = () => {
     // lazy load the required ArcGIS API for JavaScript 
@@ -55,18 +58,9 @@ export const WebMapView = () => {
       });
       
       const wards = new GeoJSONLayer(wardConfig.layer);
-      const allTrees = new GeoJSONLayer(TreeConfig(treeURL));
-      const poor = document.getElementById('Poor')
-
-      poor.addEventListener('click', async function(){
-        if(allTrees){
-          map.removeAll()
-          console.log('map click function: ', treeURL)
-          const poorTrees = new GeoJSONLayer(TreeConfig(`getByParams?CONDITION=Poor`));
-
-          map.add(poorTrees)
-        }
-      })
+      const allTrees = new GeoJSONLayer(TreeConfig('getAll'));
+      const activeConditions = document.querySelectorAll('.condition-on');
+      const activeWards = document.querySelectorAll('.ward-on');
 
       const generateRenderer = (layer) => {
         // configure parameters for the color renderer generator.
@@ -112,10 +106,32 @@ export const WebMapView = () => {
         var attributes = graphic.attributes;
         var condition = attributes.condition;
         
-        console.log(graphic);       
-        console.log(graphic.attributes);   
-        console.log(coor)
       }
+
+      const domFilter = (nodeList, mainList, urlParam) => {
+        // poor button event listener
+        nodeList.forEach(nodeItem=>{
+          let condition = nodeItem.dataset.item
+          nodeItem.addEventListener('click', async function(){
+            map.removeAll()
+            if(mainList.includes(condition)){
+              const condFilter = cond=>{return cond != condition}
+              mainList = mainList.filter(condFilter)
+            }
+            else{
+              mainList = mainList.push(condition)
+              console.log(mainList.toString())
+            }
+            let poorTrees = new GeoJSONLayer(TreeConfig(`getByParams?${urlParam}=${mainList.toString()}`));
+            watchUtils.whenFalseOnce(view, "updating", generateRenderer(poorTrees));
+            map.add(poorTrees)
+            console.log(`getByParams?CONDITION=${mainList.toString()}`)
+          })
+        })
+      }
+
+      domFilter(activeConditions, conditionList, 'CONDITION')
+      // domFilter(activeConditions, conditionList, 'WARDS')
 
 
       // END OF WARD CONFIG
@@ -140,8 +156,7 @@ export const WebMapView = () => {
   useEffect(()=>{
 
     loadMap()
-    console.log('useEffect: ', treeURL)
-  },[treeURL]);
+  });
 
     return <div className="webmap" ref={mapRef} />;
 };

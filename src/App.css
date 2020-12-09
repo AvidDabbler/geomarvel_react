@@ -14,3 +14,23 @@
   width: 100vh;
   visibility: hidden;
 }
+button:hover{
+  background-color: white;
+  color:black;
+}
+.button-on {
+  color: white;
+  background-color: blue;
+  border-color: blue;
+  margin-top: 5px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.button-off {
+  color: blue;
+  background-color: pink;
+  border-color: blue;
+  margin-top: 5px;
+  margin-left: auto;
+  margin-right: auto;
+}
