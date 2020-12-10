@@ -14,7 +14,7 @@ export const WebMapView = () => {
   let treeURL = 'getAll'
   let conditionList = ['Excellent', 'Good', 'Fair', 'Poor'];
   const wardList = [1,2,3,4,5,6,7,8,9];
-  let poorTrees, condFilter;
+  let filteredTrees, condFilter;
 
 
   const loadMap = () => {
@@ -63,6 +63,7 @@ export const WebMapView = () => {
       const activeConditions = document.querySelectorAll('.condition-on');
       const activeWards = document.querySelectorAll('.ward-on');
 
+      
       const generateRenderer = (layer) => {
         // configure parameters for the color renderer generator.
         // The layer must be specified along with a field name
@@ -131,9 +132,9 @@ export const WebMapView = () => {
             }
             config = TreeConfig(`getByParams?${urlParam}=${mainList.toString()}`);
             console.log('config:', config)
-            poorTrees = new GeoJSONLayer(config);
-            watchUtils.whenFalseOnce(view, "updating", generateRenderer(poorTrees));
-            map.add(poorTrees)
+            filteredTrees = new GeoJSONLayer(config);
+            watchUtils.whenFalseOnce(view, "updating", generateRenderer(filteredTrees));
+            map.add(filteredTrees)
             console.log(`getByParams?CONDITION=${condition}`)
             return
           })

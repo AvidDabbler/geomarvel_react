@@ -1,49 +1,58 @@
-import React from 'react';
+import {Component} from 'react';
 
-function ButtonsGroup(props){
-    let elements = [];
-    let onClass = props.onClass;
-    
-    props.list.forEach((item) => {
-        elements.push(
-            <li key={item} className="mr-3 mx-auto">
-                <button 
-                    id={item}
-                    className={`button-on inline-block border rounded py-1 px-3 ${onClass}`} 
-                    data-rendered={true}
+class Button extends Component {
+    constructor(props) {
+        super(props)
+        this.state = { button: true }
+        this.handleClick = this.handleClick.bind.this
+    }
+    handleClick(){
+        this.setState({
+          button:!this.state.button
+        })
+      }
+    render() {
+        const { item, onClass } = this.props; 
+        return (
+            <>
+                <button
+                    className={`${this.state.button ? "button-on" : "button-off"} inline-block border rounded py-1 px-3 ${onClass}`}
+                    onClick={e=>this.handleClick}
                     data-item={item}
-                    onClick={e=>{
-                        let buttonClasslist= document.getElementById(item).classList
-                        if(buttonClasslist.contains('button-on')){
-                            buttonClasslist.remove('button-on');
-                            buttonClasslist.remove(onClass);
-                            buttonClasslist.add('button-off');
-                        }
-                        else{
-                            buttonClasslist.remove('button-off');
-                            buttonClasslist.add(onClass);
-                            buttonClasslist.add('button-on');
-                        }
-                    }}
-                    onLoad={e=>{
-                        let buttonClasslist= document.getElementById(item).classList
-                        buttonClasslist.remove('button-off');
-                        buttonClasslist.add(onClass);
-                        buttonClasslist.add('button-on');
-                    }}
-                    >{item}
-                </button>
-            </li>)
-    })
-    
-    return(
-        <div className="flex mx-auto">
-            <ul className="flex flex-col mx-auto">
-                {elements}
-            </ul>
-        </div>
+                >
+                    {item}
+                </button>  
+            </>
+        )
+    }
+};
 
-    )
+class ButtonsGroup extends Component{
+    constructor(props) {
+        super(props)
+    }
+    listBuild() {
+        const div = this.props.list.forEach((item) => {
+                        console.log(item)
+                        return (
+                            <li key={item} className="mr-3 mx-auto">
+                                <Button item={item} onClass={this.props.onClass} />
+                            </li>)
+        })
+        return div
+    }
+    render() {
+        return(
+            <div className="flex mx-auto">
+                <ul className="flex flex-col mx-auto">
+                    {this.listBuild()}
+                           
+                </ul>
+            </div>
+
+        )
+        
+    }
 }
 
 export default ButtonsGroup;
