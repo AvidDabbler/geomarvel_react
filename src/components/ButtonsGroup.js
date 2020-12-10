@@ -31,21 +31,19 @@ class ButtonsGroup extends Component{
     constructor(props) {
         super(props)
     }
-    listBuild() {
-        const div = this.props.list.forEach((item) => {
-                        console.log(item)
-                        return (
-                            <li key={item} className="mr-3 mx-auto">
-                                <Button item={item} onClass={this.props.onClass} />
-                            </li>)
-        })
-        return div
-    }
+    div = this.props.list.map((item) => {
+                                console.log(item)
+                                return (
+                                    <li key={item} className="mr-3 mx-auto">
+                                        <Button item={item} onClass={this.props.onClass} />
+                                    </li>)
+                })
+
     render() {
         return(
             <div className="flex mx-auto">
                 <ul className="flex flex-col mx-auto">
-                    {this.listBuild()}
+                    {this.div}
                            
                 </ul>
             </div>
