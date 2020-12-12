@@ -7,7 +7,10 @@ const ConditionButtons = (props) => {
     const conditionList = ['Excellent', 'Good', 'Fair', 'Poor'];
 
     return(
-        <ButtonsGroup list={conditionList} onClass='condition-on' />
+        <div>
+            <h1 className=' font-bold '>Conditions</h1>
+            <ButtonsGroup list={conditionList} onClass='condition-on' catetgory='condition' />
+        </div>
     )
 }
 

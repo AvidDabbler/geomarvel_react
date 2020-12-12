@@ -5,7 +5,10 @@ const WardButtons = (props) => {
     const wardList = [1,2,3,4,5,6,7,8,9];
 
     return(
-        <ButtonsGroup list={wardList} onClass='ward-on' />
+        <div>
+            <h1 className='mx-auto font-bold'>Wards</h1>
+            <ButtonsGroup list={wardList} onClass='ward-on'  catetgory='ward' />
+        </div>
     )
 }
 

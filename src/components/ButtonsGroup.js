@@ -1,28 +1,30 @@
 import {Component} from 'react';
 
-class Button extends Component {
+class Checkbox extends Component {
     constructor(props) {
         super(props)
-        this.state = { button: true }
+        this.state = { checked: true }
         this.handleClick = this.handleClick.bind.this
     }
     handleClick(){
         this.setState({
-          button:!this.state.button
+          checked:!this.state.checked
         })
       }
     render() {
-        const { item, onClass } = this.props; 
+        const { item, onClass, category } = this.props; 
         return (
-            <>
-                <button
-                    className={`${this.state.button ? "button-on" : "button-off"} inline-block border rounded py-1 px-3 ${onClass}`}
-                    onClick={e=>this.handleClick}
+            <label
+                className={`flex inline-block py-1 px-3 pr-5 ${onClass} ${category}`}
+            >
+                <input
+                    className='mr-2'
+                    onChange={e=>this.handleClick}
                     data-item={item}
-                >
-                    {item}
-                </button>  
-            </>
+                    type='checkbox'
+                /> 
+                {item}
+            </label>
         )
     }
 };
@@ -32,17 +34,18 @@ class ButtonsGroup extends Component{
         super(props)
     }
     div = this.props.list.map((item) => {
-                                console.log(item)
                                 return (
-                                    <li key={item} className="mr-3 mx-auto">
-                                        <Button item={item} onClass={this.props.onClass} />
+                                    <li key={item} className="mr-3 flex">
+                                        <Checkbox
+                                            item={item} 
+                                            onClass={this.props.onClass} />
                                     </li>)
                 })
 
     render() {
         return(
-            <div className="flex mx-auto">
-                <ul className="flex flex-col mx-auto">
+            <div className="">
+                <ul className="flex flex-col ">
                     {this.div}
                            
                 </ul>
