@@ -15,9 +15,10 @@ class Checkbox extends Component {
         const { item, onClass, category } = this.props; 
         return (
             <label
-                className={`flex inline-block py-1 px-3 pr-5 ${onClass} ${category}`}
+                className={`flex inline-block py-1 px-3 pr-5 ${onClass}`}
             >
                 <input
+                    defaultChecked={this.state.checked}
                     className='mr-2'
                     onChange={e=>this.handleClick}
                     data-item={item}
@@ -29,7 +30,7 @@ class Checkbox extends Component {
     }
 };
 
-class ButtonsGroup extends Component{
+class Checkboxes extends Component{
     constructor(props) {
         super(props)
     }
@@ -56,4 +57,4 @@ class ButtonsGroup extends Component{
     }
 }
 
-export default ButtonsGroup;
+export default Checkboxes;

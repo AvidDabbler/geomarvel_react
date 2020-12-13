@@ -1,5 +1,5 @@
 import React from 'react';
-import ButtonsGroup from './ButtonsGroup';
+import Checkboxes from './Checkboxes';
 
 
 const ConditionButtons = (props) => {
@@ -9,7 +9,7 @@ const ConditionButtons = (props) => {
     return(
         <div>
             <h1 className=' font-bold '>Conditions</h1>
-            <ButtonsGroup list={conditionList} onClass='condition-on' catetgory='condition' />
+            <Checkboxes list={conditionList} onClass='condition-on'/>
         </div>
     )
 }

@@ -109,15 +109,23 @@ export const WebMapView = () => {
         var condition = attributes.condition;
         
       }
+
+      // set up domFilter to return lists of elements on click from all categories
       let config;
-      const domFilter = (nodeList, mainList, urlParam) => {
+      const domFilter = (nodeList, mainList, urlParam, category) => {
         // poor button event listener
-        if(nodeList.length == 0){
+        if(nodeList.length == 1){
           map.removeAll()
           map.add(allTrees)
+          nodeList.forEach(nodeItem=>{
+            nodeItem.classList.add(`${category}-on`)
+
+          })
         }
         nodeList.forEach(nodeItem=>{
-          let condition = nodeItem.dataset.item
+          console.log(nodeItem)
+          let condition = nodeItem.control.dataset.item
+          console.log(condition)
           // find all of the coresponding buttons
           nodeItem.addEventListener('click', async function(){
             map.removeAll()
@@ -135,7 +143,7 @@ export const WebMapView = () => {
             filteredTrees = new GeoJSONLayer(config);
             watchUtils.whenFalseOnce(view, "updating", generateRenderer(filteredTrees));
             map.add(filteredTrees)
-            console.log(`getByParams?CONDITION=${condition}`)
+            console.log(`getByParams?${urlParam}=${mainList.toString()}`)
             return
           })
         })
