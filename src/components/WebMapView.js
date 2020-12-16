@@ -43,9 +43,7 @@ export const WebMapView = () => {
       UniqueValueRenderer,
       dom
     ]) => {
-      const map = new ArcGISMap({
-        basemap: 'topo-vector'
-      });
+      const map = new ArcGISMap({basemap: 'topo-vector'});
       
       // load the map view at the ref's DOM node
       const view = new MapView({
@@ -62,7 +60,10 @@ export const WebMapView = () => {
         }
       });
       
+      // get the ward boundaries
       const wards = new GeoJSONLayer(wardConfig.layer);
+
+      // get all of the trees for the initial load
       const allTrees = new GeoJSONLayer(TreeConfig('getAll'));
 
       const activeConditions = document.querySelectorAll('.condition');
@@ -103,11 +104,7 @@ export const WebMapView = () => {
           });
       }
 
-      // start of click event
-      // https://totalapis.github.io/sample-code/sandbox/index.html?sample=view-hittest
-      // view.on("click", (e)=>clickFeature(e, view));
-
-      // access the attributes
+      // access the attributes called on every render
       function getGraphics(response, coor) {
         // the topmost graphic from the click location
         // and display select attribute values from the
@@ -129,7 +126,6 @@ export const WebMapView = () => {
       };
       const domFilter = () => {
         // poor button event listener
-        
         const filterTypes = (nodeItem) => {
           let type = nodeItem.control.dataset.type;
           let item = nodeItem.control.dataset.item;
@@ -157,19 +153,15 @@ export const WebMapView = () => {
             console.log(obj)
           })
         }
-        
-        activeConditions.forEach(nodeItem => filterTypes(nodeItem))
-        activeWards.forEach(nodeItem => filterTypes(nodeItem))
+        // runs listener functions as map loads
+        activeConditions.forEach(nodeItem => filterTypes(nodeItem)) // call all of the filter commands on conditions
+        activeWards.forEach(nodeItem => filterTypes(nodeItem)) // call all of the filter commands on wards
       }
 
       
       
       domFilter()
-      // condArr = domFilter(activeConditions, conditionList, 'CONDITION')
-      // wardArr = domFilter(activeWards, wardList, 'WARDS')
-
-      // condArr == '*' & wardArr == '*' ? map.add(allTrees) : filterTrees()
-
+      
       // END OF WARD CONFIG
       watchUtils.whenFalseOnce(view, "updating", generateRenderer(allTrees));
       let button = document.getElementsByClassName('button')
@@ -178,14 +170,6 @@ export const WebMapView = () => {
       map.add(wards)
       map.add(allTrees)
 
-      // view.constraints = {minZoom: 12};
-
-        // return () => {
-        //   if (view) {
-        //     // destroy the map view
-        //     view.destroy();
-        //   }
-        // };
       });
     }
   
