@@ -60,7 +60,7 @@ export const WebMapView = () => {
       
       const wards = new GeoJSONLayer(wardConfig.layer);
       const allTrees = new GeoJSONLayer(TreeConfig('getAll'));
-      const activeConditions = document.querySelectorAll('.condition-on');
+      const activeConditions = document.querySelectorAll('.condition');
       const activeWards = document.querySelectorAll('.ward-on');
 
       
@@ -113,6 +113,7 @@ export const WebMapView = () => {
       // set up domFilter to return lists of elements on click from all categories
       let config;
       const domFilter = (nodeList, mainList, urlParam, category) => {
+        console.log(nodeList.length)
         // poor button event listener
         if(nodeList.length == 1){
           map.removeAll()
@@ -123,7 +124,6 @@ export const WebMapView = () => {
           })
         }
         nodeList.forEach(nodeItem=>{
-          console.log(nodeItem)
           let condition = nodeItem.control.dataset.item
           console.log(condition)
           // find all of the coresponding buttons
@@ -131,12 +131,13 @@ export const WebMapView = () => {
             map.removeAll()
             // if button is turned off, l
             if(mainList.includes(condition)){
+              console.log('if')
               condFilter = cond=>{return cond != condition}
               mainList = mainList.filter(condFilter)
             }
             // if button is turned back on add back to list
             else{
-              mainList = mainList.push(condition)
+              mainList.push(condition)
             }
             config = TreeConfig(`getByParams?${urlParam}=${mainList.toString()}`);
             console.log('config:', config)
