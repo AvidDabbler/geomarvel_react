@@ -9,7 +9,7 @@ const ConditionButtons = (props) => {
     return(
         <div>
             <h1 className=' font-bold '>Conditions</h1>
-            <Checkboxes list={conditionList} onClass='condition-on' cat='condition'/>
+            <Checkboxes list={conditionList} onClass='condition-on' type='condition'/>
         </div>
     )
 }

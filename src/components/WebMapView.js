@@ -14,6 +14,10 @@ export const WebMapView = () => {
   let treeURL = 'getAll'
   let conditionList = ['Excellent', 'Good', 'Fair', 'Poor'];
   const wardList = [1,2,3,4,5,6,7,8,9];
+  let obj = {
+    condition: ['Excellent', 'Good', 'Fair', 'Poor'],
+    ward: ['1','2','3','4','5','6','7','8','9'],
+  }
   let filteredTrees, condFilter;
 
 
@@ -60,8 +64,12 @@ export const WebMapView = () => {
       
       const wards = new GeoJSONLayer(wardConfig.layer);
       const allTrees = new GeoJSONLayer(TreeConfig('getAll'));
+
       const activeConditions = document.querySelectorAll('.condition');
-      const activeWards = document.querySelectorAll('.ward-on');
+      let condArr = '*'
+      
+      const activeWards = document.querySelectorAll('.ward');
+      let wardArr = '*'
 
       
       const generateRenderer = (layer) => {
@@ -111,48 +119,56 @@ export const WebMapView = () => {
       }
 
       // set up domFilter to return lists of elements on click from all categories
-      let config;
-      const domFilter = (nodeList, mainList, urlParam, category) => {
-        console.log(nodeList.length)
+      const filterTrees = (obj) => {
+        let config = TreeConfig(`getByParams?CONDITION=${obj.condition.toString()}&WARD=${obj.ward.toString()}`);
+        console.log(config)
+        filteredTrees = new GeoJSONLayer(config);
+        watchUtils.whenFalseOnce(view, "updating", generateRenderer(filteredTrees));
+        map.add(filteredTrees);
+        return 
+      };
+      const domFilter = () => {
         // poor button event listener
-        if(nodeList.length == 1){
-          map.removeAll()
-          map.add(allTrees)
-          nodeList.forEach(nodeItem=>{
-            nodeItem.classList.add(`${category}-on`)
-
-          })
-        }
-        nodeList.forEach(nodeItem=>{
-          let condition = nodeItem.control.dataset.item
-          console.log(condition)
+        
+        const filterTypes = (nodeItem) => {
+          let type = nodeItem.control.dataset.type;
+          let item = nodeItem.control.dataset.item;
+          let activeClass = document.querySelectorAll(`.${type}-on`)
           // find all of the coresponding buttons
           nodeItem.addEventListener('click', async function(){
-            map.removeAll()
+            map.removeAll();
+            
             // if button is turned off, l
-            if(mainList.includes(condition)){
-              console.log('if')
-              condFilter = cond=>{return cond != condition}
-              mainList = mainList.filter(condFilter)
+            if(obj[type].includes(item)){
+              condFilter = cond=>{return cond != item}
+              obj[type] = obj[type].filter(condFilter);
             }
             // if button is turned back on add back to list
             else{
-              mainList.push(condition)
+              obj[type].push(item);
             }
-            config = TreeConfig(`getByParams?${urlParam}=${mainList.toString()}`);
-            console.log('config:', config)
-            filteredTrees = new GeoJSONLayer(config);
-            watchUtils.whenFalseOnce(view, "updating", generateRenderer(filteredTrees));
-            map.add(filteredTrees)
-            console.log(`getByParams?${urlParam}=${mainList.toString()}`)
-            return
+            if(activeConditions.length == 0){
+              console.log('actCond == 0')
+              map.add(allTrees)
+              activeClass.forEach(nodeItem=>{nodeItem.classList.add(`${type}-on`)})
+              return 
+            }
+            filterTrees(obj)
+            console.log(obj)
           })
-        })
+        }
+        
+        activeConditions.forEach(nodeItem => filterTypes(nodeItem))
+        activeWards.forEach(nodeItem => filterTypes(nodeItem))
       }
 
-      domFilter(activeConditions, conditionList, 'CONDITION')
-      // domFilter(activeWards, wardList, 'WARDS')
+      
+      
+      domFilter()
+      // condArr = domFilter(activeConditions, conditionList, 'CONDITION')
+      // wardArr = domFilter(activeWards, wardList, 'WARDS')
 
+      // condArr == '*' & wardArr == '*' ? map.add(allTrees) : filterTrees()
 
       // END OF WARD CONFIG
       watchUtils.whenFalseOnce(view, "updating", generateRenderer(allTrees));

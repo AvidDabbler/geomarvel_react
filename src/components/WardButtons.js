@@ -7,7 +7,7 @@ const WardButtons = (props) => {
     return(
         <div>
             <h1 className='mx-auto font-bold'>Wards</h1>
-            <Checkboxes list={wardList} onClass='ward-on' cat='ward' />
+            <Checkboxes list={wardList} onClass='ward-on' type='ward' />
         </div>
     )
 }
