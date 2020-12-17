@@ -128,14 +128,19 @@ export const WebMapView = () => {
       const domFilter = () => {
         // poor button event listener
         const filterTypes = (nodeItem) => {
-          let type = nodeItem.control.dataset.type;
-          let item = nodeItem.control.dataset.item;
+          let type = nodeItem.dataset.type;
+          let item = nodeItem.dataset.item;
           let classType = document.querySelectorAll(`.${type}`);
           let activeClass = document.querySelectorAll(`.${type}-on`);
           // find all of the coresponding buttons
+          classType.forEach(nodeItem=>{
+            console.log(nodeItem)
+            nodeItem.classList.add(`${type}-on`);
+            nodeItem.checked = true
+          });
+
           nodeItem.addEventListener('click', async function(){
             map.removeAll();
-            
             // if button is turned off, l
             if(obj[type].includes(item)){
               condFilter = cond=>{return cond != item}
@@ -145,10 +150,10 @@ export const WebMapView = () => {
             else{
               obj[type].push(item);
             }
-            if(classType.length == 0){
+            if(activeClass.length == 1){
               console.log('actCond == 0')
               map.add(allTrees)
-              document.querySelectorAll(`.${type}`).forEach(nodeItem=>{
+              classType.forEach(nodeItem=>{
                 console.log(nodeItem)
                 nodeItem.classList.add(`${type}-on`);
                 nodeItem.checked = true

@@ -15,11 +15,11 @@ class Checkbox extends Component {
         const { item, onClass, type } = this.props; 
         return (
             <label
-                className={`flex inline-block py-1 px-3 pr-5 ${onClass} ${type}`}
+                className={`flex inline-block py-1 px-3 pr-5`}
             >
                 <input
                     defaultChecked={this.state.checked}
-                    className='mr-2'
+                    className={`mr-2 ${onClass} ${type}`}
                     onChange={e=>this.handleClick}
                     data-item={item}
                     data-type={type}
