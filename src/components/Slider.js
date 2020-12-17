@@ -29,7 +29,8 @@ class Slider extends Component{
                     onRequestClose={() => setState({ isPaneOpenLeft: false })}
                     >
                   <div style={{ height: '100%', width: '100%', padding: 0, margin: 0 }}>
-                        <iframe src={this.props.src} style={{height: '100%', width: '100%', padding: 0, margin: 0 }}></iframe>
+                        
+                        
                   </div>
                 </SlidingPane>
             </div>

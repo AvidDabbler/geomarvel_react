@@ -4,7 +4,7 @@ import Checkboxes from './Checkboxes';
 
 const ConditionButtons = (props) => {
     
-    const conditionList = ['Excellent', 'Good', 'Fair', 'Poor'];
+    const conditionList = ['Excellent', 'Good', 'Fair', 'Poor', 'Dead'];
 
     return(
         <div>

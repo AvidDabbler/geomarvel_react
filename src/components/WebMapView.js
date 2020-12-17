@@ -14,7 +14,7 @@ export const WebMapView = () => {
   const mapRef = useRef();
 
   let obj = {
-    condition: ['Excellent', 'Good', 'Fair', 'Poor'],
+    condition: ['Excellent', 'Good', 'Fair', 'Poor', 'Dead'],
     ward: ['1','2','3','4','5','6','7','8','9'],
   }
   let filteredTrees, condFilter;
@@ -27,20 +27,13 @@ export const WebMapView = () => {
       'esri/Map', 
       'esri/views/MapView',
       "esri/layers/GeoJSONLayer",
-      // "esri/smartMapping/renderers/type",
-      "esri/core/watchUtils",
-      // "esri/renderers/UniqueValueRenderer",
-      // "dojo/dom",
-      // "dojo/domReady!"
+      "esri/widgets/Locate"
     ], { css: true })
     .then(([
       ArcGISMap, 
       MapView, 
       GeoJSONLayer, 
-      // typeRendererCreator,
-      watchUtils,
-      // UniqueValueRenderer,
-      // dom
+      Locate
     ]) => {
       const map = new ArcGISMap({basemap: 'topo-vector'});
       
@@ -57,6 +50,10 @@ export const WebMapView = () => {
             breakpoint: false
           }
         }
+      });
+
+      var locateBtn = new Locate({
+        view: view
       });
       
       // get the ward boundaries
@@ -140,7 +137,9 @@ export const WebMapView = () => {
 
       map.add(wards)
       map.add(allTrees)
-
+      view.ui.add(locateBtn, {
+        position: "top-left"
+      });
       });
     }
   
