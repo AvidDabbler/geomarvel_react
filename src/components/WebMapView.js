@@ -60,13 +60,9 @@ export const WebMapView = () => {
       const wards = new GeoJSONLayer(wardConfig.layer);
 
       // get all of the trees for the initial load
-      const allTrees = new GeoJSONLayer(TreeConfig('getAll'));
+      const allTrees = new GeoJSONLayer(TreeConfig(`${process.env.REACT_APP_API_HOST}/getAll`));
 
-      const activeConditions = document.querySelectorAll('.condition');
-      let condArr = '*'
-      
-      const activeWards = document.querySelectorAll('.ward');
-      let wardArr = '*'
+      const checkboxes = document.querySelectorAll('.checkbox');
 
       // access the attributes called on every render
       function getGraphics(response, coor) {
@@ -81,56 +77,54 @@ export const WebMapView = () => {
 
       // set up domFilter to return lists of elements on click from all categories
       const filterTrees = (obj) => {
-        let config = TreeConfig(`getByParams?CONDITION=${obj.condition.toString()}&WARD=${obj.ward.toString()}`);
+        
+        let config = TreeConfig(`${process.env.REACT_APP_API_HOST}/getByParams?CONDITION=${obj.condition.toString()}&WARD=${obj.ward.toString()}`);
         console.log(config)
         filteredTrees = new GeoJSONLayer(config);
         map.add(filteredTrees);
         return 
       };
-      const domFilter = () => {
-        // poor button event listener
-        const filterTypes = (nodeItem) => {
-          let type = nodeItem.dataset.type;
-          let item = nodeItem.dataset.item;
-          let classType = document.querySelectorAll(`.${type}`);
-          let activeClass = document.querySelectorAll(`.${type}-on`);
-          // find all of the coresponding buttons
-          classType.forEach(nodeItem=>{
-            nodeItem.classList.add(`${type}-on`);
-            nodeItem.checked = true
-          });
+      
+      // poor button event listener
+      const filterTypes = (nodeItem) => {
+        let type = nodeItem.dataset.type;
+        let item = nodeItem.dataset.item;
+        let classType = document.querySelectorAll(`.checkbox`);
+        let activeClass = document.querySelectorAll(`.${type}-on`);
+        // find all of the coresponding buttons
+        classType.forEach(nodeItem=>{
+          nodeItem.classList.add(`${type}-on`);
+          nodeItem.checked = true
+        });
 
-          nodeItem.addEventListener('click', async function(){
-            map.removeAll();
-            // if button is turned off, l
-            if(obj[type].includes(item)){
-              condFilter = cond=>{return cond != item}
-              obj[type] = obj[type].filter(condFilter);
-            }
-            // if button is turned back on add back to list
-            else{
-              obj[type].push(item);
-            }
-            
-            filterTrees(obj)
-            console.log(obj)
-          })
-          if(activeClass.length == 0){
-            console.log('actCond == 0')
-            // map.add(allTrees)
-            classType.forEach(ni=>{
-              ni.classList.add(`${type}-on`);
-              ni.checked = true
-            })
-            return 
+        nodeItem.addEventListener('click', async function(){
+          map.removeAll();
+          // if button is turned off, l
+          if(obj[type].includes(item)){
+            condFilter = cond=>{return cond != item}
+            obj[type] = obj[type].filter(condFilter);
           }
+          // if button is turned back on add back to list
+          else{
+            obj[type].push(item);
+          }
+          
+          filterTrees(obj)
+          console.log(obj)
+        })
+        if(activeClass.length == 0){
+          console.log('actCond == 0')
+          // map.add(allTrees)
+          classType.forEach(ni=>{
+            ni.classList.add(`${type}-on`);
+            ni.checked = true
+          })
+          return 
         }
-        // runs listener functions as map loads
-        activeConditions.forEach(nodeItem => filterTypes(nodeItem)) // call all of the filter commands on conditions
-        activeWards.forEach(nodeItem => filterTypes(nodeItem)) // call all of the filter commands on wards
       }
-
-      domFilter()
+      // runs listener functions as map loads
+      
+      checkboxes.forEach(nodeItem => filterTypes(nodeItem)) // call all of the filter commands on conditions
       
       // END OF WARD CONFIG
 

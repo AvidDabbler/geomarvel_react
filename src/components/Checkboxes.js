@@ -20,7 +20,7 @@ class Checkbox extends Component {
             >
                 <input
                     defaultChecked={this.state.checked}
-                    className={`mr-2 ${onClass} ${type}`}
+                    className={`mr-2 checkbox ${onClass} ${type}`}
                     onChange={e=>this.handleClick}
                     data-item={item}
                     data-type={type}
