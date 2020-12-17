@@ -5,6 +5,7 @@ import TreeURL from '../hooks/TreeURL';
 import clickFeature from '../functions/treeClickHandler';
 
 
+
 const wardConfig = require('../mapConfig/wardConfig.json')
 
 
@@ -129,7 +130,8 @@ export const WebMapView = () => {
         const filterTypes = (nodeItem) => {
           let type = nodeItem.control.dataset.type;
           let item = nodeItem.control.dataset.item;
-          let activeClass = document.querySelectorAll(`.${type}-on`)
+          let classType = document.querySelectorAll(`.${type}`);
+          let activeClass = document.querySelectorAll(`.${type}-on`);
           // find all of the coresponding buttons
           nodeItem.addEventListener('click', async function(){
             map.removeAll();
@@ -143,10 +145,14 @@ export const WebMapView = () => {
             else{
               obj[type].push(item);
             }
-            if(activeConditions.length == 0){
+            if(classType.length == 0){
               console.log('actCond == 0')
               map.add(allTrees)
-              activeClass.forEach(nodeItem=>{nodeItem.classList.add(`${type}-on`)})
+              document.querySelectorAll(`.${type}`).forEach(nodeItem=>{
+                console.log(nodeItem)
+                nodeItem.classList.add(`${type}-on`);
+                nodeItem.checked = true
+              })
               return 
             }
             filterTrees(obj)
@@ -178,5 +184,9 @@ export const WebMapView = () => {
     loadMap()
   });
 
-    return <div className="webmap" ref={mapRef} />;
+    return (
+      <div className="webmap" ref={mapRef}>
+      <div >
+        </div>
+      </div>)
 };
