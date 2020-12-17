@@ -10,6 +10,7 @@ class Checkbox extends Component {
         this.setState({
           checked:!this.state.checked
         })
+        
       }
     render() {
         const { item, onClass, type } = this.props; 

@@ -12,9 +12,7 @@ const wardConfig = require('../mapConfig/wardConfig.json')
 
 export const WebMapView = () => {
   const mapRef = useRef();
-  let treeURL = 'getAll'
-  let conditionList = ['Excellent', 'Good', 'Fair', 'Poor'];
-  const wardList = [1,2,3,4,5,6,7,8,9];
+
   let obj = {
     condition: ['Excellent', 'Good', 'Fair', 'Poor'],
     ward: ['1','2','3','4','5','6','7','8','9'],
@@ -29,20 +27,20 @@ export const WebMapView = () => {
       'esri/Map', 
       'esri/views/MapView',
       "esri/layers/GeoJSONLayer",
-      "esri/smartMapping/renderers/type",
+      // "esri/smartMapping/renderers/type",
       "esri/core/watchUtils",
-      "esri/renderers/UniqueValueRenderer",
-      "dojo/dom",
-      "dojo/domReady!"
+      // "esri/renderers/UniqueValueRenderer",
+      // "dojo/dom",
+      // "dojo/domReady!"
     ], { css: true })
     .then(([
       ArcGISMap, 
       MapView, 
       GeoJSONLayer, 
-      typeRendererCreator,
+      // typeRendererCreator,
       watchUtils,
-      UniqueValueRenderer,
-      dom
+      // UniqueValueRenderer,
+      // dom
     ]) => {
       const map = new ArcGISMap({basemap: 'topo-vector'});
       
@@ -73,38 +71,6 @@ export const WebMapView = () => {
       const activeWards = document.querySelectorAll('.ward');
       let wardArr = '*'
 
-      
-      const generateRenderer = (layer) => {
-        // configure parameters for the color renderer generator.
-        // The layer must be specified along with a field name
-        // The view and other properties determine
-        // the appropriate default color scheme.
-
-        var typeParams = {
-          layer,
-          view: view,
-          field: "CONDITION",
-          legendOptions: {
-            title: "Last known condition of tree"
-          }
-        };
-
-        typeRendererCreator
-          .createRenderer(typeParams)
-          .then(function (response) {
-            // set the renderer to the layer and add it to the map
-
-            layer.renderer = response.renderer;
-
-            if (!map.layers.includes(layer)) {
-              map.add(layer);
-            }
-          })
-          .catch(function (error) {
-            console.error("there was an error: ", error);
-          });
-      }
-
       // access the attributes called on every render
       function getGraphics(response, coor) {
         // the topmost graphic from the click location
@@ -121,7 +87,6 @@ export const WebMapView = () => {
         let config = TreeConfig(`getByParams?CONDITION=${obj.condition.toString()}&WARD=${obj.ward.toString()}`);
         console.log(config)
         filteredTrees = new GeoJSONLayer(config);
-        watchUtils.whenFalseOnce(view, "updating", generateRenderer(filteredTrees));
         map.add(filteredTrees);
         return 
       };
@@ -134,7 +99,6 @@ export const WebMapView = () => {
           let activeClass = document.querySelectorAll(`.${type}-on`);
           // find all of the coresponding buttons
           classType.forEach(nodeItem=>{
-            console.log(nodeItem)
             nodeItem.classList.add(`${type}-on`);
             nodeItem.checked = true
           });
@@ -150,32 +114,28 @@ export const WebMapView = () => {
             else{
               obj[type].push(item);
             }
-            if(activeClass.length == 1){
-              console.log('actCond == 0')
-              map.add(allTrees)
-              classType.forEach(nodeItem=>{
-                console.log(nodeItem)
-                nodeItem.classList.add(`${type}-on`);
-                nodeItem.checked = true
-              })
-              return 
-            }
+            
             filterTrees(obj)
             console.log(obj)
           })
+          if(activeClass.length == 0){
+            console.log('actCond == 0')
+            // map.add(allTrees)
+            classType.forEach(ni=>{
+              ni.classList.add(`${type}-on`);
+              ni.checked = true
+            })
+            return 
+          }
         }
         // runs listener functions as map loads
         activeConditions.forEach(nodeItem => filterTypes(nodeItem)) // call all of the filter commands on conditions
         activeWards.forEach(nodeItem => filterTypes(nodeItem)) // call all of the filter commands on wards
       }
 
-      
-      
       domFilter()
       
       // END OF WARD CONFIG
-      watchUtils.whenFalseOnce(view, "updating", generateRenderer(allTrees));
-      let button = document.getElementsByClassName('button')
 
 
       map.add(wards)
