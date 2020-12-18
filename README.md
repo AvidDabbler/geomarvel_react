@@ -10,9 +10,9 @@ install tutorial https://daveceddia.com/tailwind-create-react-app/
 - youtube: https://www.youtube.com/watch?v=C-8im8eEUPQ
 
 ### @arcgis/core setup
-Install
- `npm install @arcgis/webpack-plugin'
- `npm run-script build`
+Install @arcgis/core
+
+ `npm install @arcgis/webpack-plugin`
+ 
  copy over the @arcgis/core/assets folder to ./public/assets
 
- 
