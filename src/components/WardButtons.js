@@ -10,7 +10,7 @@ const WardButtons = (props) => {
             <Checkboxes 
                 list={wardList} 
                 onClass='ward-on' 
-                type='ward' />
+                type='wards' />
         </div>
     )
 }
