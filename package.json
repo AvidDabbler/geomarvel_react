@@ -25,7 +25,7 @@
     "copy": "ncp ./node_modules/@arcgis/core/assets ./public/assets",
     "postinstall": "npm run copy",
     "build:tailwind": "tailwindcss build src/tailwind.css -o src/tailwind.output.css",
-    "start": "react-scripts start",
+    "start": "set PORT=3006 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
