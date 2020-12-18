@@ -3,3 +3,8 @@
 ## Tailwind
 install tutorial https://daveceddia.com/tailwind-create-react-app/
 
+## @arcgis/core
+- NPM: https://www.npmjs.com/package/@arcgis/core
+- github: https://github.com/Esri/jsapi-resources/tree/master/esm-samples/jsapi-create-react-app/src
+- esri: https://developers.arcgis.com/javascript/latest/guide/es-modules/
+- youtube: https://www.youtube.com/watch?v=C-8im8eEUPQ

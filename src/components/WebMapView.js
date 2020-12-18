@@ -1,5 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-import { loadModules } from 'esri-loader';
+// import { loadModules } from 'esri-loader';
+import ArcGISMap from "@arcgis/core/Map";
+import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
+import MapView from '@arcgis/core/views/MapView';
+// import Locate from '@arcgis/core/widgets/Locate';
 import TreeConfig from '../hooks/TreeConfig';
 import TreeURL from '../hooks/TreeURL';
 import clickFeature from '../functions/treeClickHandler';
@@ -21,26 +25,13 @@ export const WebMapView = () => {
 
 
   const loadMap = () => {
-    // lazy load the required ArcGIS API for JavaScript 
-    // modules and CSS
-    loadModules([
-      'esri/Map', 
-      'esri/views/MapView',
-      "esri/layers/GeoJSONLayer",
-      "esri/widgets/Locate"
-    ], { css: true })
-    .then(([
-      ArcGISMap, 
-      MapView, 
-      GeoJSONLayer, 
-      Locate
-    ]) => {
-      const map = new ArcGISMap({basemap: 'topo-vector'});
+    
+      const map = new ArcGISMap({basemap: 'gray-vector'});
       
       // load the map view at the ref's DOM node
       const view = new MapView({
-        container: mapRef.current,
         map: map,
+        container: mapRef.current,
         center: [-77.03, 38.89],
         zoom: 12,
         popup: {
@@ -52,9 +43,9 @@ export const WebMapView = () => {
         }
       });
 
-      var locateBtn = new Locate({
-        view: view
-      });
+      // var locateBtn = new Locate({
+      //   view: view
+      // });
       
       // get the ward boundaries
       const wards = new GeoJSONLayer(wardConfig.layer);
@@ -131,15 +122,14 @@ export const WebMapView = () => {
 
       map.add(wards)
       map.add(allTrees)
-      view.ui.add(locateBtn, {
-        position: "top-left"
-      });
-      });
+      // view.ui.add(locateBtn, {
+      //   position: "top-left"
+      // });
     }
   
-  useEffect(()=>{
-
+    useEffect(()=>{
     loadMap()
+
   });
 
     return (
