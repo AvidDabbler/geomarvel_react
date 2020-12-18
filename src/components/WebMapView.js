@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import ArcGISMap from "@arcgis/core/Map";
 import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
 import MapView from '@arcgis/core/views/MapView';
-// import Locate from '@arcgis/core/widgets/Locate';
+import Locate from '@arcgis/core/widgets/Locate';
 import TreeConfig from '../hooks/TreeConfig';
 import TreeURL from '../hooks/TreeURL';
 import clickFeature from '../functions/treeClickHandler';
@@ -43,9 +43,9 @@ export const WebMapView = () => {
         }
       });
 
-      // var locateBtn = new Locate({
-      //   view: view
-      // });
+      var locateBtn = new Locate({
+        view: view
+      });
       
       // get the ward boundaries
       const wards = new GeoJSONLayer(wardConfig.layer);
@@ -122,9 +122,9 @@ export const WebMapView = () => {
 
       map.add(wards)
       map.add(allTrees)
-      // view.ui.add(locateBtn, {
-      //   position: "top-left"
-      // });
+      view.ui.add(locateBtn, {
+        position: "top-left"
+      });
     }
   
     useEffect(()=>{

@@ -22,3 +22,5 @@ Install @arcgis/core
  
  copy over the @arcgis/core/assets folder to ./public/assets
 
+in App.css at the top import the arcgis css
+`@import "~@arcgis/core/assets/esri/themes/light/main.css";`
