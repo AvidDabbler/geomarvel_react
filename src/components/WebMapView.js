@@ -127,7 +127,7 @@ export const WebMapView = () => {
 
     const loadTrees = () => {
       console.log('updateTrees');
-      trees = new GeoJSONLayer(TreeConfig(`${process.env.REACT_APP_API_HOST}/${treeURL}`));
+      trees = new GeoJSONLayer(TreeConfig(treeURL));
       map.remove(trees);
       map.add(trees);
 

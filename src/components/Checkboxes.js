@@ -1,27 +1,14 @@
 import {Component} from 'react';
+import CheckListState from '../hooks/ChecklistState';
 
-class Checkbox extends Component {
-    constructor(props) {
-        super(props)
-        this.state = { checked: true }
-        this.handleClick = this.handleClick.bind.this
-    }
-    handleClick(){
-        this.setState({
-          checked:!this.state.checked
-        })
-        
-      }
-    render() {
-        const { item, onClass, type } = this.props; 
+const Checkbox = (props) => {
+
+        const { item, onClass, type } = props; 
         return (
-            <label
-                className={`flex inline-block py-1 px-3 pr-5`}
-            >
+            <label className={`flex inline-block py-1 px-3 pr-5`}>
                 <input
-                    defaultChecked={this.state.checked}
+                    defaultChecked={true}
                     className={`mr-2 checkbox ${onClass} ${type}`}
-                    onChange={e=>this.handleClick}
                     data-item={item}
                     data-type={type}
                     type='checkbox'
@@ -29,35 +16,39 @@ class Checkbox extends Component {
                 {item}
             </label>
         )
-    }
+
 };
 
-class Checkboxes extends Component{
-    constructor(props) {
-        super(props)
-    }
-    div = this.props.list.map((item) => {
-                                return (
-                                    <li key={item} className="mr-3 flex">
-                                        <Checkbox
-                                            item={item} 
-                                            onClass={this.props.onClass} 
-                                            type={this.props.type}/>
-                                    </li>)
+const Checkboxes = (props) => {
+    let [checklist, setChecklist] = CheckListState();
+    const {onClass, type, list} = props;
+    const handleClick = (event) =>{
+        
+        console.log(event.target.dataset.item);
+      }
+
+    let div = list.map((item) => {
+                return (
+                    <li key={item} 
+                        onClick={e=>handleClick(e)}
+                        className="mr-3 flex" >
+                        <Checkbox
+                            item={item} 
+                            onClass={onClass} 
+                            type={type}/>
+                    </li>)
                 })
 
-    render() {
-        return(
-            <div className="">
-                <ul className="flex flex-col ">
-                    {this.div}
-                           
-                </ul>
-            </div>
 
-        )
-        
-    }
+    return(
+        <div className="">
+            <ul className="flex flex-col ">
+                {div}         
+            </ul>
+        </div>
+
+    )
 }
+
 
 export default Checkboxes;
