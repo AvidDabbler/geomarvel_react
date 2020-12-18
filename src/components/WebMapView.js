@@ -26,7 +26,7 @@ export const WebMapView = () => {
 
   const loadMap = () => {
     
-      const map = new ArcGISMap({basemap: 'gray-vector'});
+      const map = new ArcGISMap({basemap: 'topo-vector'});
       
       // load the map view at the ref's DOM node
       const view = new MapView({
