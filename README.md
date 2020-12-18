@@ -14,3 +14,5 @@ Install
  `npm install @arcgis/webpack-plugin'
  `npm run-script build`
  copy over the @arcgis/core/assets folder to ./public/assets
+
+ 
