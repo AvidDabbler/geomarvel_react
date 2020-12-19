@@ -4,7 +4,13 @@ let TreeConfig = (url) => {
             popupEnabled: true,
             popupTemplate:{
                 "title": "Tree",
-                "content": "<ul><li><b>Ward:</b> {WARD}</li><li><b>Condition:</b> {CONDITION}</li><li><b>Type:</b> {CMMN_NM} (<em>{SCI_NM}</em>)</li><li><b>Owner:</b> {OWNERSHIP}</li><li><b>Vincity:</b> {VICINITY}</li></ul>" 
+                "content": "<ul><li><b>Ward:</b> {WARD}</li>"
+                +"<li><b>Condition:</b> {CONDITION}</li>"
+                +"<li><b>Type:</b> {CMMN_NM} (<em>{SCI_NM}</em>)</li>"
+                +"<li><b>Owner:</b> {OWNERSHIP}</li>"
+                +"<li><b>Vincity:</b> {VICINITY}</li>"
+                +"</ul>" 
+                +"<a href=''>Google Maps</a>"
             },
             renderer:{
                 type: "unique-value",  // autocasts as new UniqueValueRenderer()

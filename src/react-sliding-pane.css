@@ -1,3 +1,8 @@
+.ReactModalPortal{
+  position: relative;
+  z-index: 10;
+}
+
 .slide-pane {
   display: flex;
   flex-direction: column;

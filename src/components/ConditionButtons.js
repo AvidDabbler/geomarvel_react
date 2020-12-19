@@ -10,6 +10,7 @@ const ConditionButtons = (props) => {
             <Checkboxes 
                 list={conditionList}
                 target={props.target}
+                alignment={props.alignment}
                 onClass='condition-on' 
                 type='conditions'/>
         </div>

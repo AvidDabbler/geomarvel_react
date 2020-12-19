@@ -5,7 +5,6 @@ import MapView from '@arcgis/core/views/MapView';
 import Locate from '@arcgis/core/widgets/Locate';
 import TreeConfig from '../hooks/TreeConfig';
 import TreeURL from '../hooks/TreeURL';
-import Slider from './Slider';
 
 
 const wardConfig = require('../mapConfig/wardConfig.json')
@@ -51,6 +50,7 @@ export function WebMapView() {
   loadTrees = (treeURL) => {
     trees = new GeoJSONLayer(TreeConfig(treeURL));
     map.add(trees);
+    console.log(trees.availableFields)
   };
 
  
@@ -63,7 +63,7 @@ export function WebMapView() {
   return (
   
   <div id='webmap' className="webmap" ref={mapRef}>
-          <Slider name='list-view'/>
+          
   </div>)
 };
 
