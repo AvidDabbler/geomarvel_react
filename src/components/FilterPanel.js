@@ -3,7 +3,8 @@ import ConditionButtons from './ConditionButtons';
 import WardButtons from './WardButtons';
 
 
-const FilterPanel = () => {
+const FilterPanel = (props) => {
+    const {target} = props;
     return(
 
         <div className='p-3 flex px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-white md:py-5 md:text-lg md:px-5'
@@ -15,8 +16,8 @@ const FilterPanel = () => {
                 
             }}
             >
-                <ConditionButtons />
-                <WardButtons />
+                <ConditionButtons target={target} />
+                <WardButtons target={target} />
 
         </div>
 

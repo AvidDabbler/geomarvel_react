@@ -1,6 +1,5 @@
-import {useEffect} from 'react';
 import CheckListState from '../hooks/ChecklistState';
-import {loadTrees, map, trees, updateTrees} from './WebMapView'
+import {loadTrees, map, trees} from './WebMapView'
 
 
 const Checkbox = (props) => {
@@ -8,13 +7,12 @@ const Checkbox = (props) => {
 
     let checked = true
     
-    const { item, onClass, type } = props; 
+    const { item, onClass, type, target } = props; 
 
     const handleClick = async (event) => {
         if(!event.target.dataset.item){
             return
         }
-
         const urlBuilder = (obj) => {
             let aCond = obj.active.conditions.length;
             let dCond = obj.divList.conditions.length;
@@ -40,9 +38,10 @@ const Checkbox = (props) => {
             
         }
         state.active[type]= list;
-        
-        map.remove(trees)
-        loadTrees(await urlBuilder(state))
+        if(target == 'map') {
+            map.remove(trees)
+            loadTrees(await urlBuilder(state))
+        }
     };
 
 
@@ -67,7 +66,7 @@ const Checkbox = (props) => {
 };
 
 const Checkboxes = (props) => {
-    const {onClass, type, list} = props;
+    const {onClass, type, list, target} = props;
 
 
     let div = list.map((item) => {
@@ -76,6 +75,7 @@ const Checkboxes = (props) => {
                         <Checkbox
                             item={item} 
                             onClass={onClass} 
+                            target={target}
                             type={type}/>
                     )
                 })

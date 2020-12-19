@@ -8,7 +8,8 @@ const ConditionButtons = (props) => {
         <div>
             <h1 className=' font-bold '>Conditions</h1>
             <Checkboxes 
-                list={conditionList} 
+                list={conditionList}
+                target={props.target}
                 onClass='condition-on' 
                 type='conditions'/>
         </div>

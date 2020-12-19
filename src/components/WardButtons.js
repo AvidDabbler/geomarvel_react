@@ -9,6 +9,7 @@ const WardButtons = (props) => {
             <h1 className='mx-auto font-bold'>Wards</h1>
             <Checkboxes 
                 list={wardList} 
+                target={props.target}
                 onClass='ward-on' 
                 type='wards' />
         </div>

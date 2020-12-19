@@ -5,21 +5,20 @@ import MapView from '@arcgis/core/views/MapView';
 import Locate from '@arcgis/core/widgets/Locate';
 import TreeConfig from '../hooks/TreeConfig';
 import TreeURL from '../hooks/TreeURL';
-import CheckListState from '../hooks/ChecklistState';
+import Slider from './Slider';
+
 
 const wardConfig = require('../mapConfig/wardConfig.json')
+
+// hoist variables to access outside of WebMapView
 let map, view, trees, loadTrees;
 
-export const WebMapView = () => {
+export function WebMapView() {
   const mapRef = useRef();
-  let [checklist, setChecklist] = CheckListState();
-
   const [treeURL, setTreeURL] = TreeURL();
+
   let loaded= false;
-  
-  
-  
-  
+
   // get the ward boundaries
   const wards = new GeoJSONLayer(wardConfig.layer);
   // get all of the trees for the initial load
@@ -57,11 +56,15 @@ export const WebMapView = () => {
  
   useEffect(() => {
     run()
-    loadTrees(treeURL)
-    
-  },[checklist]);
+    loadTrees('getAll')
+    console.log(treeURL)
+  },[treeURL]);
 
-  return (<div id='webmap' className="webmap" ref={mapRef}></div>)
+  return (
+  
+  <div id='webmap' className="webmap" ref={mapRef}>
+          <Slider name='list-view'/>
+  </div>)
 };
 
 export {map, trees, loadTrees}
