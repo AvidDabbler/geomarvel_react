@@ -4,7 +4,7 @@ import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
 import MapView from '@arcgis/core/views/MapView';
 import Locate from '@arcgis/core/widgets/Locate';
 import TreeConfig from '../hooks/TreeConfig';
-import TreeURL from '../hooks/TreeURL';
+// import treeURL from '../hooks/treeURL';
 
 
 const wardConfig = require('../mapConfig/wardConfig.json')
@@ -12,10 +12,10 @@ const wardConfig = require('../mapConfig/wardConfig.json')
 // hoist variables to access outside of WebMapView
 let map, view, trees, loadTrees;
 
-export function WebMapView() {
+export function WebMapView(props) {
+  const {treeURL} = props;
   const mapRef = useRef();
-  const [treeURL, setTreeURL] = TreeURL();
-
+  
   let loaded= false;
 
   // get the ward boundaries
@@ -23,7 +23,7 @@ export function WebMapView() {
   // get all of the trees for the initial load
   let boxes = document.querySelectorAll(`.checkbox`);
   
-  var locateBtn = new Locate({view: view});
+  var locateBtn = new Locate({view});
   
   const run = ()=>{
     map = new ArcGISMap({basemap: 'topo-vector'});
@@ -47,23 +47,28 @@ export function WebMapView() {
     loaded = !loaded;
   };
 
-  loadTrees = (treeURL) => {
-    trees = new GeoJSONLayer(TreeConfig(treeURL));
+  loadTrees = (url) => {
+    trees = new GeoJSONLayer(TreeConfig(url));
     map.add(trees);
     console.log(trees.availableFields)
   };
 
  
   useEffect(() => {
-    run()
-    loadTrees('getAll')
-    console.log(treeURL)
+    if(!loaded){
+      run()
+    }
+    else{
+      map.remove(trees)
+    }
+    loadTrees(treeURL)
+    console.log('it ran')
   },[treeURL]);
 
   return (
   
   <div id='webmap' className="webmap" ref={mapRef}>
-          
+      
   </div>)
 };
 

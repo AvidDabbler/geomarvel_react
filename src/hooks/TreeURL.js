@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 // const getAll = `getAll`
 
-const TreeURL = () => {
-    let [treeURL, setTreeUrl] = useState('getAll')
-    return [treeURL, setTreeUrl]
-}
+
+function TreeURL(init) {
+    const [turl, setTreeUrl] = useState(init);
+    return [turl, setTreeUrl];
+};
 
 
 export default TreeURL;

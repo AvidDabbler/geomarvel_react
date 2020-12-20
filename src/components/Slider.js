@@ -1,6 +1,7 @@
-import React, { Component, setState } from 'react'
+import React, { Component } from 'react'
 import SlidingPane from "react-sliding-pane";
 import FilterPanel from './FilterPanel';
+import {ListPanel} from './ListPanel';
 import list from '../assets/list.png';
 import map from '../assets/map.png';
 
@@ -30,19 +31,32 @@ class Slider extends Component{
                     from="right"
                     width="100vw"
                     >
-                  <div style={{ height: '100%', width: '100%', padding: 0, margin: 0, zIndex: 101 }}>
-                  <FilterPanel 
-                        target='list' 
-                        alignment='flex-col'
+                <div
+                    className='flex flex-row' 
+                    style={{ 
+                        height: '90%', 
+                        zIndex: 101, }}
+                >
+                    <FilterPanel 
+                            className={`p-3 flex px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-white md:py-5 md:text-lg md:px-5 ring-2 flex-col mr-48`}
+                            target='list' 
+                            alignment='flex-col'
+                            style={{
+                                backgroundColor: '#f4fdff',
+                                zIndex:3,}} 
+                    />
+                    <ListPanel
+                        className='p-3 flex px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-white md:py-5 md:text-lg md:px-5 ring-2 '
                         style={{
                             backgroundColor: '#f4fdff',
-                            position: 'absolute',
-                            zIndex:3,
-                            top:30,
-                            left: 20
-                    }} />
+                            zIndex:2,
+                            height:100,
+                            width:100,
+                            marginLeft: 30,
+                            }}
                         
-                  </div>
+                    />
+                </div>
                 </SlidingPane>
             </div>
         )
