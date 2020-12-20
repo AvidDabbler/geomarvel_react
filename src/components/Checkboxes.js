@@ -1,5 +1,5 @@
 import CheckListState from '../hooks/ChecklistState';
-import {loadTrees, map, trees} from './WebMapView';
+import {loadTrees} from './WebMapView';
 import urlBuilder from './urlBuilder';
 import React, {useEffect} from 'react';
 
@@ -42,7 +42,6 @@ function Checkbox(props) {
         state.active[type]= list;
         let url = await urlBuilder(state)
         if(target == 'map') {
-            map.remove(trees)
             loadTrees(await urlBuilder(state))
         }
         else if (target == 'list'){

@@ -48,6 +48,7 @@ export function WebMapView(props) {
   };
 
   loadTrees = (url) => {
+    map.remove(trees)
     trees = new GeoJSONLayer(TreeConfig(url));
     map.add(trees);
     console.log(trees.availableFields)

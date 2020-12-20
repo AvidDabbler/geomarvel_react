@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import ConditionButtons from './ConditionButtons';
 import WardButtons from './WardButtons';
 import TreeURL from '../hooks/treeURL';
+import {loadTrees} from './WebMapView';
 
 
 const FilterPanel = (props) => {
