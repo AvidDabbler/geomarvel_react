@@ -93,7 +93,7 @@ const ListPanel = (props) => {
 
     let featuresList = features.map((fea) => {
                                         return(
-                                            <ListItem fea={fea} setItem={setItem}  />
+                                            <ListItem fea={fea} key={fea.properties.OBJECTID} setItem={setItem}  />
                                         )
                                     })
 
