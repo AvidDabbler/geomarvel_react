@@ -1,63 +1,98 @@
-import {Component} from 'react';
+import CheckListState from '../hooks/ChecklistState';
+import urlBuilder from './urlBuilder';
+import React, {useEffect, useState} from 'react';
+import {setURL} from './WebMapView';
+import {setListURLExport} from './ListPanel';
 
-class Checkbox extends Component {
-    constructor(props) {
-        super(props)
-        this.state = { checked: true }
-        this.handleClick = this.handleClick.bind.this
+let checklistObj = {
+    divList: {
+        conditions: ['Excellent', 'Good', 'Fair', 'Poor', 'Dead'],
+        wards: [1,2,3,4,5,6,7,8,9]
+    },
+    active: {
+        conditions: ['Excellent', 'Good', 'Fair', 'Poor', 'Dead'],
+        wards: [1,2,3,4,5,6,7,8,9]
     }
-    handleClick(){
-        this.setState({
-          checked:!this.state.checked
-        })
+}
+
+
+
+function Checkbox(props) {
+    const { item, onClass, type, target} = props; 
+    let [checklist, setChecklist] = CheckListState(checklistObj);
+
+    let checked = true
+    
+    let state = checklist;
+
+    async function handleClick (event){
+        if(!event.target.dataset.item){
+            return
+        } 
         
-      }
-    render() {
-        const { item, onClass, type } = this.props; 
-        return (
-            <label
-                className={`flex inline-block py-1 px-3 pr-5`}
-            >
+        let list = checklist.active[type];
+        checked = !checked;
+
+        if(checked){
+            list.push(item);
+        } else{
+            const itemFilter = cond=>{return cond != event.target.dataset.item};
+            list = list.filter(itemFilter);
+            
+        }
+        
+        state.active[type]= list;
+        let url = await urlBuilder(state)
+        if(target == 'map') {
+            setURL(prev => {return {...prev, url:url}})
+        }
+        else if (target == 'list'){
+            setListURLExport(prev => {return {...prev, url:url}})
+        }
+    };
+
+    return (
+        <li key={item} 
+                    onClick={async e=>{handleClick(e)}}
+                    checked={checked}
+                    className="mr-3 flex checkbox" >
+            <label className={`flex inline-block py-1 px-3 pr-5`}>
                 <input
-                    defaultChecked={this.state.checked}
-                    className={`mr-2 checkbox ${onClass} ${type}`}
-                    onChange={e=>this.handleClick}
+                    defaultChecked={true}
+                    className={`mr-2  ${onClass} ${type}`}
                     data-item={item}
                     data-type={type}
                     type='checkbox'
                 /> 
                 {item}
             </label>
-        )
-    }
+        </li>
+    )
 };
 
-class Checkboxes extends Component{
-    constructor(props) {
-        super(props)
-    }
-    div = this.props.list.map((item) => {
-                                return (
-                                    <li key={item} className="mr-3 flex">
-                                        <Checkbox
-                                            item={item} 
-                                            onClass={this.props.onClass} 
-                                            type={this.props.type}/>
-                                    </li>)
+const Checkboxes = (props) => {
+    const {onClass, type, list, target} = props;
+
+
+    let div = list.map((item) => {
+                return (  
+                        <Checkbox
+                            item={item} 
+                            onClass={onClass} 
+                            target={target}
+                            type={type}/>
+                    )
                 })
 
-    render() {
-        return(
-            <div className="">
-                <ul className="flex flex-col ">
-                    {this.div}
-                           
-                </ul>
-            </div>
+    return(
+        <div className="">
+            <ul className="flex flex-col ">
+                {div}         
+            </ul>
+        </div>
 
-        )
-        
-    }
+    )
 }
+
 
 export default Checkboxes;
