@@ -20,7 +20,7 @@ const HighlightPanel = (props) => {
     const {style} = props;
 
     return(
-        <div className={` p-3 flex px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-white md:py-5 md:text-lg md:px-5 ring-2`}
+        <div className={`w-3/4 p-3 flex px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-white md:py-5 md:text-lg md:px-5 ring-2`}
         style={style}
         >
             
@@ -31,7 +31,13 @@ const HighlightPanel = (props) => {
 function ListItem(props) {
     const {fea} = props;
     return (
-        <li>{fea.properties.CONDITION}</li>
+        <button className='w-full flex mb-2 overflow-scroll p-3 flex px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-white md:py-5 md:text-lg md:px-5 ring-2'>
+            <div>
+                <li><b>ID: </b>{fea.properties.OBJECTID}  </li>
+                <li><b>Ward: </b>{fea.properties.WARD}  </li>
+                <li><b>Condition: </b>{fea.properties.CONDITION}  </li>
+            </div>
+        </button>
     )
 };
 
@@ -73,11 +79,11 @@ const ListPanel = (props) => {
     return(
         <div className='flex w-screen'> 
             <div 
-                className={` p-3 flex px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-white md:py-5 md:text-lg md:px-5 ring-2`}
+                className={`w-1/4 overflow-scroll p-3 flex px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-white md:py-5 md:text-lg md:px-5 ring-2`}
                 style={style}
                 ref={listRef}
             >
-                <ul>
+                <ul className=''>
                     {!loaded? <p>Loading...</p>: featuresList }
                 </ul>
             </div>
