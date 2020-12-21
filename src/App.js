@@ -4,7 +4,7 @@ import './react-sliding-pane.css';
 import { WebMapView } from './components/WebMapView';
 import FilterPanel from './components/FilterPanel';
 import Slider from './components/Slider';
-import TreeURL from './hooks/treeURL';
+import TreeURL from './hooks/TreeURL';
 
 
 function App() {
