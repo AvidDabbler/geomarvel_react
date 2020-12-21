@@ -81,14 +81,14 @@ const HighlightPanel = (props) => {
     }
 
     return(
-        <div className={`flex flex-col ml-5 w-1/2 p-3 flex px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-white md:py-5 md:text-lg md:px-5 ring-2`}>
+        <div className={`flex flex-col ml-5 w-1/2 p-3 flex px-8 py-3 border border-transparent text-base font-medium rounded-md text-${item.properties.CONDITIODT==0?'red':'indigo'}-700 bg-white md:py-5 md:text-lg md:px-5 ring-2`}>
                 <ul>
                 <h2><b>Tree ID: </b>{item.properties.OBJECTID}</h2>
                     <li><b>Condition: </b>{item.properties.CONDITION}</li>
                     <li><b>Facility ID: </b>{item.properties.FACILITYID}</li>
                     <li><b>Ward: </b>{item.properties.WARD}</li>
                     <li><b>Vacinity: </b>{item.properties.VICINITY}</li>
-                    <li><b>Plant Date: </b>{()=>{return new Date(item.properties.DATE_PLANT)}}</li>
+                    <li><b>Plant Date: </b>{item.properties.DATE_PLANT}</li>
                     <li><b>Scientific Name: </b>{item.properties.SCI_NM}</li>
                     <li><b>Common Name: </b>{item.properties.CMMN_NM}</li>
                     <li><b>Ownership: </b>{item.properties.OWNERSHIP}</li>
@@ -119,7 +119,7 @@ function ListItem(props) {
         <button 
             data-item={fea.properties.OBJECTID}
             onClick={e=>setItem(prev=> fea)}
-            className='w-full flex mb-2 overflow-scroll p-3 flex px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-white md:py-5 md:text-lg md:px-5 ring-2'>
+            className={`w-full flex mb-2 overflow-scroll p-3 flex px-8 py-3 border border-transparent text-base font-medium rounded-md text-${fea.properties.CONDITIODT==0?'red':'indigo'}-700 bg-white md:py-5 md:text-lg md:px-5 ring-2`}>
                 <div>
                     <li><b>ID: </b>{fea.properties.OBJECTID}  </li>
                     <li><b>Ward: </b>{fea.properties.WARD}  </li>
