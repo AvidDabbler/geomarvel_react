@@ -63,3 +63,48 @@ npm install @arcgis/webpack-plugin @arcgis/core
 ```
 @import "~@arcgis/core/assets/esri/themes/light/main.css";
 ```
+
+# Deployment
+This app was deployed on AWS ec2.
+
+- create ec2
+- install dependencies
+
+Git
+```
+sudo yum install git
+```
+
+nodejs
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+. ~/.nvm/nvm.sh
+nvm install node
+```
+
+clone repo
+```
+git clone https://github.com/AvidDabbler/geomarvel_api.git
+```
+
+npm install
+```
+cd geomarvel_react
+npm install
+```
+
+make .env file
+```
+touch .env
+REACT_APP_API_HOST=http://localhost:3000
+```
+
+build
+```
+npm build
+```
+
+crontab setup
+```
+@reboot cd geomarvel_react && npm start
+```
