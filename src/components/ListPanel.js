@@ -1,13 +1,30 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import axios from 'axios';
     
-function ListViewState(init){
-    const [listView, setListView] = useState(init);
-    return [listView, setListView];
+function ListViewState(){
+    const [listURL, setListURL] = useState({url:'getAll'});
+    return [listURL, setListURL];
 }
 
+let setListURLExport;
+
 const ListPanel = (props) => {
-    const {style, url} = props;
+    const [listURL, setListURL] = ListViewState();
+    setListURLExport = setListURL;
+    const {style} = props;
     const listPanel = useRef('initialValue')
+
+    const getData = async (url) => {
+        const response = await axios({method: 'get', url: `${process.env.REACT_APP_API_HOST}/${url}`});
+        // const json = await data.json();
+        const data = response.data
+        console.log(data)
+        
+    }
+    useEffect(async() => {
+        const data = await getData(listURL.url);
+
+    }, [listURL])
 
     return(
         <div 
@@ -20,4 +37,4 @@ const ListPanel = (props) => {
     )
 };
 
-export {ListPanel,ListViewState};
+export {ListPanel,setListURLExport};

@@ -2,6 +2,7 @@ import CheckListState from '../hooks/ChecklistState';
 import urlBuilder from './urlBuilder';
 import React, {useEffect, useState} from 'react';
 import {setURL} from './WebMapView';
+import {setListURLExport} from './ListPanel';
 
 let checklistObj = {
     divList: {
@@ -17,8 +18,9 @@ let checklistObj = {
 
 
 function Checkbox(props) {
-    const { item, onClass, type} = props; 
+    const { item, onClass, type, target} = props; 
     let [checklist, setChecklist] = CheckListState(checklistObj);
+
     let checked = true
     
     let state = checklist;
@@ -41,16 +43,12 @@ function Checkbox(props) {
         
         state.active[type]= list;
         let url = await urlBuilder(state)
-        // if(target == 'map') {
-        //     loadTrees(await urlBuilder(state))
-        // }
-        // else if (target == 'list'){
-            
-        // }
-        setURL(prev => {return {...prev, url:url}})
-
-        return urlBuilder(state)
-        
+        if(target == 'map') {
+            setURL(prev => {return {...prev, url:url}})
+        }
+        else if (target == 'list'){
+            setListURLExport(prev => {return {...prev, url:url}})
+        }
     };
 
     return (
