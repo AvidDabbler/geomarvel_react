@@ -8,4 +8,4 @@ function TreeURL() {
 };
 
 
-export default TreeURL;
+export {TreeURL};

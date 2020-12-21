@@ -4,9 +4,10 @@ import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
 import MapView from '@arcgis/core/views/MapView';
 import Locate from '@arcgis/core/widgets/Locate';
 import TreeConfig from '../hooks/TreeConfig';
-import TreeURL from '../hooks/TreeURL';
+import {TreeURL} from '../hooks/TreeURL';
+import {PageLoadState} from '../hooks/PageLoadState';
 
-
+// import ward boundaries geojson
 const wardConfig = require('../mapConfig/wardConfig.json')
 
 // hoist variables to access outside of WebMapView
@@ -17,9 +18,8 @@ let setURL;
 
 export function WebMapView(props) {
   const [turl, setTreeURL] = TreeURL();
+  const [pageLoaded, setPageLoaded] = PageLoadState();
   const mapRef = useRef();
-  
-  let loaded= false;
 
   // get the ward boundaries
   const wards = new GeoJSONLayer(wardConfig.layer);
@@ -47,7 +47,7 @@ export function WebMapView(props) {
     map.add(wards)
     loadTrees();
     view.ui.add(locateBtn, {position: "top-left"});
-    loaded = !loaded;
+    setPageLoaded(pageLoaded => !pageLoaded);
   };
 
   loadTrees = (url) => {
@@ -58,14 +58,11 @@ export function WebMapView(props) {
 
   setURL = setTreeURL
 
- 
+ // run on load and
   useEffect(() => {
-    if(!map){
-      run()
-    }
-    else{
-      map.remove(trees)
-    }
+    // load base map coponents and ui on page load. Remove trees on rerender.
+    !map ? run() : map.remove(trees)
+
     loadTrees(turl.url)
   },[turl]);
 
