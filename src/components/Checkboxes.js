@@ -75,8 +75,7 @@ const Checkboxes = (props) => {
 
 
     let div = list.map((item) => {
-                return (
-                    
+                return (  
                         <Checkbox
                             item={item} 
                             onClass={onClass} 

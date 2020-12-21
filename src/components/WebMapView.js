@@ -67,7 +67,6 @@ export function WebMapView(props) {
       map.remove(trees)
     }
     loadTrees(turl.url)
-    console.log(turl)
   },[turl]);
 
   return (
