@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import ArcGISMap from "@arcgis/core/Map";
-import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
-import MapView from '@arcgis/core/views/MapView';
-import Locate from '@arcgis/core/widgets/Locate';
+// import ArcGISMap from "@arcgis/core/Map";
+// import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
+// import MapView from '@arcgis/core/views/MapView';
+// import Locate from '@arcgis/core/widgets/Locate';
+import { loadModules } from 'esri-loader';
 import TreeConfig from '../hooks/TreeConfig';
 import {TreeURL} from '../hooks/TreeURL';
 import {PageLoadState} from '../hooks/PageLoadState';
@@ -11,16 +12,20 @@ import {PageLoadState} from '../hooks/PageLoadState';
 const wardConfig = require('../mapConfig/wardConfig.json')
 
 // hoist variables to access outside of WebMapView
-let map, view, trees, loadTrees
+let map, view, trees, loadTrees, run
 
 //Placeholder setTreeURL
 let setURL;
 
-export function WebMapView(props) {
+export async function WebMapView(props) {
+  const [ArcGISMap, MapView, GeoJSONLayer, Locate] = await loadModules([
+    'esri/Map',
+    'esri/views/MapView',
+    'esri/layers/GeoJSONLayer', 'esri/widgets/Locate'
+  ]);
   const [turl, setTreeURL] = TreeURL();
   const [pageLoaded, setPageLoaded] = PageLoadState();
   const mapRef = useRef();
-
   // get the ward boundaries
   const wards = new GeoJSONLayer(wardConfig.layer);
   // get all of the trees for the initial load
@@ -28,7 +33,7 @@ export function WebMapView(props) {
   
   var locateBtn = new Locate({view});
   
-  const run = ()=>{
+  run = ()=>{
     map = new ArcGISMap({basemap: 'topo-vector'});
     // load the map view at the ref's DOM node
     view = new MapView({
@@ -44,7 +49,7 @@ export function WebMapView(props) {
         }
       }
     });
-    map.add(wards)
+    // map.add(wards)
     loadTrees();
     view.ui.add(locateBtn, {position: "top-left"});
     setPageLoaded(pageLoaded => !pageLoaded);
@@ -52,7 +57,7 @@ export function WebMapView(props) {
 
   loadTrees = (url) => {
     map.remove(trees)
-    trees = new GeoJSONLayer(TreeConfig(url));
+    // trees = new GeoJSONLayer(TreeConfig(url));
     map.add(trees);
   };
 
@@ -72,5 +77,4 @@ export function WebMapView(props) {
       
   </div>)
 };
-
-export {map, trees, loadTrees, setURL}
+export {map, trees, loadTrees, setURL};
