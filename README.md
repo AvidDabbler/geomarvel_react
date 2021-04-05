@@ -1,3 +1,5 @@
+TEST
+
 # DC Trees React Application
 
 This Application is meant to go along side the [geomarvel_api](https://github.com/AvidDabbler/geomarvel_api) node application. While the common libraries for ArcGIS JS API are generally either `esri-loader` or `webpack-plugin` I wanted to use this time to explore the new `@arcgis/core` module. This module seems to be the more predisessor to the `webpack-plugin` and while documentation for the module is scarce it required less setup than webpack, but accomplishes better usability of code when working in React Hooks and allows for the modules to be loaded in the global scope instead of relying on `dojo`. More information about `@arcgis/core` can be found below.
